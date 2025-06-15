@@ -7,6 +7,9 @@ import Settings from '@/components/Settings';
 import Profile from '@/components/Profile';
 import Call from '@/components/Call';
 import BottomNavbar from '@/components/BottomNavbar';
+import NotificationSettings from '@/components/NotificationSettings';
+import FontSizeSettings from '@/components/FontSizeSettings';
+import ThemeSettings from '@/components/ThemeSettings';
 import { cn } from '@/lib/utils';
 
 const Index: React.FC = () => {
@@ -46,12 +49,18 @@ const Index: React.FC = () => {
         return <Profile />;
       case 'call':
         return <Call />;
+      case 'notification_settings':
+        return <NotificationSettings />;
+      case 'font_size_settings':
+        return <FontSizeSettings />;
+      case 'theme_settings':
+        return <ThemeSettings />;
       default:
         return <Home />;
     }
   };
 
-  const showNavbar = !['call', 'profile'].includes(activeScreen);
+  const showNavbar = !['call', 'profile', 'notification_settings', 'font_size_settings', 'theme_settings'].includes(activeScreen);
 
   return (
     <div className="h-screen w-full bg-background text-foreground overflow-hidden">

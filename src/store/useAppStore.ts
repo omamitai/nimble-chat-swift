@@ -1,7 +1,6 @@
-
 import { create } from 'zustand';
 
-export type Screen = 'home' | 'contacts' | 'settings' | 'profile' | 'call';
+export type Screen = 'home' | 'contacts' | 'settings' | 'profile' | 'call' | 'notification_settings' | 'font_size_settings' | 'theme_settings';
 
 export interface Contact {
   id: string;
@@ -72,6 +71,7 @@ interface AppState {
   setSearching: (searching: boolean) => void;
   setShowSearchBar: (show: boolean) => void;
   setTheme: (theme: 'light' | 'dark' | 'auto') => void;
+  setFontSize: (size: 'small' | 'medium' | 'large') => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
   toggleContactBlock: (contactId: string) => void;
   toggleFavorite: (contactId: string) => void;
@@ -214,6 +214,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       }
     }
   },
+  
+  setFontSize: (size) => set({ fontSize: size }),
   
   updateProfile: (updates) => {
     const { currentUser } = get();

@@ -162,11 +162,11 @@ const Home: React.FC = () => {
         {activeTab === 'favorites' ? (
           <div className="px-6 py-4">
             {filteredContacts.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-6">
-                  <Users className="w-10 h-10 text-primary" />
+              <div className="flex flex-col items-center justify-center py-16 text-center px-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-6">
+                  <Users className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">No favorite contacts</h3>
+                <h3 className="text-lg font-bold mb-2">No favorite contacts</h3>
                 <p className="text-muted-foreground/80 text-sm mb-6 max-w-xs leading-relaxed">
                   {searchQuery ? 'Try a different search term' : 'Add contacts to favorites for quick calling'}
                 </p>
@@ -179,26 +179,26 @@ const Home: React.FC = () => {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 {filteredContacts.map(contact => (
                   <div
                     key={contact.id}
-                    className="nordic-card p-6 text-center group hover:scale-[1.02] transition-all cursor-pointer"
+                    className="nordic-card p-4 text-center group hover:scale-[1.02] transition-all cursor-pointer"
                   >
                     <Avatar
                       src={contact.avatar}
                       name={contact.name}
                       size="xl"
                       isOnline={contact.isOnline}
-                      className="mx-auto mb-4"
+                      className="mx-auto mb-3"
                     />
-                    <h3 className="font-bold text-foreground mb-1 truncate">
+                    <h3 className="font-bold text-foreground text-sm mb-1 truncate">
                       {contact.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground/80 mb-4 truncate">
+                    <p className="text-xs text-muted-foreground/80 mb-3 truncate">
                       {contact.username}
                     </p>
-                    <div className="flex justify-center space-x-3">
+                    <div className="flex justify-center space-x-2">
                       <button
                         onClick={() => handleVoiceCall(contact.id)}
                         className="call-button-voice"
@@ -222,11 +222,11 @@ const Home: React.FC = () => {
         ) : (
           <div className="divide-y divide-border/15">
             {recentCallsWithContacts.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-6">
-                  <Clock className="w-10 h-10 text-primary" />
+              <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-6">
+                  <Clock className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">No recent calls</h3>
+                <h3 className="text-lg font-bold mb-2">No recent calls</h3>
                 <p className="text-muted-foreground/80 text-sm max-w-xs leading-relaxed">
                   Your recent calls will appear here
                 </p>
@@ -237,7 +237,7 @@ const Home: React.FC = () => {
                 return (
                   <div
                     key={call.id}
-                    className="flex items-center space-x-4 px-6 py-5 hover:bg-gradient-to-r hover:from-muted/20 hover:to-transparent transition-all group"
+                    className="flex items-center space-x-4 px-4 py-4 hover:bg-gradient-to-r hover:from-muted/20 hover:to-transparent transition-all group"
                   >
                     <Avatar
                       src={call.contact?.avatar}

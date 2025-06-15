@@ -1,8 +1,13 @@
+
 import React from 'react';
-import { ArrowLeft, Camera, Bell, Settings as SettingsIcon, Mic } from 'lucide-react';
+import {
+  ArrowLeft, Camera, Bell, Shield, Palette, Type, AreaChart,
+  Database, LifeBuoy, Info, ChevronRight
+} from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 const Settings: React.FC = () => {
   const {
@@ -12,7 +17,6 @@ const Settings: React.FC = () => {
     notifications,
     setActiveScreen,
     setTheme,
-    updateNotificationSettings,
   } = useAppStore();
 
   const handleProfileEdit = () => {
@@ -34,16 +38,16 @@ const Settings: React.FC = () => {
           onClick: handleProfileEdit,
         },
         {
-          icon: SettingsIcon,
+          icon: Shield,
           label: 'Privacy & Security',
           value: 'Manage your privacy settings',
-          onClick: () => console.log('Privacy settings'),
+          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
         },
         {
           icon: Bell,
           label: 'Notifications',
           value: notifications.enabled ? 'Enabled' : 'Disabled',
-          onClick: () => console.log('Notification settings'),
+          onClick: () => setActiveScreen('notification_settings'),
         },
       ],
     },
@@ -51,16 +55,16 @@ const Settings: React.FC = () => {
       title: 'Appearance',
       items: [
         {
-          icon: SettingsIcon,
+          icon: Palette,
           label: 'Theme',
           value: theme.charAt(0).toUpperCase() + theme.slice(1),
-          onClick: () => console.log('Theme settings'),
+          onClick: () => setActiveScreen('theme_settings'),
         },
         {
-          icon: SettingsIcon,
+          icon: Type,
           label: 'Font Size',
           value: fontSize.charAt(0).toUpperCase() + fontSize.slice(1),
-          onClick: () => console.log('Font size settings'),
+          onClick: () => setActiveScreen('font_size_settings'),
         },
       ],
     },
@@ -68,16 +72,16 @@ const Settings: React.FC = () => {
       title: 'Data & Storage',
       items: [
         {
-          icon: SettingsIcon,
+          icon: AreaChart,
           label: 'Data Usage',
           value: 'Manage data usage',
-          onClick: () => console.log('Data usage'),
+          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
         },
         {
-          icon: SettingsIcon,
+          icon: Database,
           label: 'Storage',
           value: 'Manage storage',
-          onClick: () => console.log('Storage'),
+          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
         },
       ],
     },
@@ -85,16 +89,16 @@ const Settings: React.FC = () => {
       title: 'Support',
       items: [
         {
-          icon: SettingsIcon,
+          icon: LifeBuoy,
           label: 'Help & Support',
           value: 'Get help',
-          onClick: () => console.log('Help'),
+          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
         },
         {
-          icon: SettingsIcon,
+          icon: Info,
           label: 'About',
           value: 'App information',
-          onClick: () => console.log('About'),
+          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
         },
       ],
     },
@@ -169,15 +173,15 @@ const Settings: React.FC = () => {
         </div>
 
         {/* Settings Sections */}
-        {settingsSections.map((section, sectionIndex) => (
+        {settingsSections.map((section) => (
           <div key={section.title} className="py-4">
             <h3 className="text-sm font-medium text-muted-foreground px-4 mb-2">
               {section.title}
             </h3>
             <div className="divide-y divide-border/50">
-              {section.items.map((item, itemIndex) => (
+              {section.items.map((item) => (
                 <div
-                  key={itemIndex}
+                  key={item.label}
                   className="flex items-center space-x-3 p-4 hover:bg-muted/50 active:bg-muted transition-smooth cursor-pointer"
                   onClick={item.onClick}
                 >
@@ -191,7 +195,7 @@ const Settings: React.FC = () => {
                     </p>
                   </div>
                   <div className="text-muted-foreground">
-                    <span className="text-sm">→</span>
+                    <ChevronRight className="w-4 h-4" />
                   </div>
                 </div>
               ))}
