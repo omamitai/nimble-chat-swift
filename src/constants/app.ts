@@ -1,9 +1,15 @@
-
 export const APP_CONFIG = {
   name: 'SecureCall',
   version: '1.0.0',
   description: 'End-to-end encrypted calling app',
   company: 'SecureCall Inc.',
+  PRIVACY_URL: 'https://securecall.com/privacy',
+  TERMS_URL: 'https://securecall.com/terms',
+  SUPPORT_EMAIL: 'support@securecall.com',
+  // Keep both formats for compatibility
+  NAME: 'SecureCall',
+  VERSION: '1.0.0',
+  DESCRIPTION: 'End-to-end encrypted calling app',
 };
 
 export const API_CONFIG = {
