@@ -168,7 +168,8 @@ const Conversation: React.FC = () => {
               <Avatar
                 src={conversation.avatar}
                 name={conversation.name}
-                size="lg"
+                size="xl"
+                className="border-2 border-background"
               />
             </div>
             <h3 className="text-lg font-medium mb-2">

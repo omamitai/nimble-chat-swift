@@ -128,8 +128,8 @@ const Call: React.FC = () => {
             <Avatar
               src={contact.avatar}
               name={contact.name}
-              size="xl"
-              className="w-48 h-48 ring-8 ring-white/20 shadow-2xl relative z-10"
+              size="call"
+              className="ring-8 ring-white/20 shadow-2xl relative z-10"
             />
             
             {/* Pulse animation for connecting/ringing */}

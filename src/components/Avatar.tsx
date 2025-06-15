@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 interface AvatarProps {
   src?: string;
   name: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'call';
   isOnline?: boolean;
   className?: string;
 }
@@ -22,6 +22,7 @@ const Avatar: React.FC<AvatarProps> = ({
     md: 'w-10 h-10 text-sm',
     lg: 'w-12 h-12 text-base',
     xl: 'w-16 h-16 text-lg',
+    call: 'w-40 h-40 text-4xl',
   };
 
   const getInitials = (name: string) => {
