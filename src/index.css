@@ -149,12 +149,10 @@
   
   .message-sent {
     @apply bg-primary text-primary-foreground ml-auto rounded-br-lg border-0;
-    box-shadow: 0 4px 20px 0 hsl(var(--primary) / 15%);
   }
   
   .message-received {
     @apply bg-muted text-foreground mr-auto rounded-bl-lg border-border;
-    box-shadow: 0 2px 12px 0 hsl(var(--muted) / 20%);
   }
   
   /* Enhanced loading animations */

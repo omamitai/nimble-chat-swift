@@ -1,5 +1,6 @@
+
 import React, { useState, useMemo } from 'react';
-import { Search, Phone, Video, Settings, Users, MessageCircle, PhoneCall, UserPlus } from 'lucide-react';
+import { Search, Phone, Video, Settings, Users, PhoneCall, UserPlus } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
