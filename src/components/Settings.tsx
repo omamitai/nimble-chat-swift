@@ -1,11 +1,9 @@
-
 import React from 'react';
 import {
-  ArrowLeft, Camera, Bell, Shield, Palette, Type, AreaChart,
-  Database, LifeBuoy, Info, Settings as SettingsIcon // Renamed to avoid conflict
+  ArrowLeft, Bell, Shield, Palette, Type, AreaChart,
+  Database, LifeBuoy, Info
 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
-import { toast } from 'sonner';
 
 import ProfileSettingItem from './settings/ProfileSettingItem';
 import ThemeQuickToggle from './settings/ThemeQuickToggle';
@@ -15,7 +13,6 @@ import VersionInfo from './settings/VersionInfo';
 
 const Settings: React.FC = () => {
   const {
-    currentUser,
     theme,
     fontSize,
     notifications,
@@ -30,7 +27,7 @@ const Settings: React.FC = () => {
           icon: Shield,
           label: 'Privacy & Security',
           value: 'Manage your privacy settings',
-          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
+          onClick: () => setActiveScreen('privacy_security'),
         },
         {
           icon: Bell,
@@ -64,13 +61,13 @@ const Settings: React.FC = () => {
           icon: AreaChart,
           label: 'Data Usage',
           value: 'Manage data usage',
-          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
+          onClick: () => setActiveScreen('data_usage'),
         },
         {
           icon: Database,
           label: 'Storage',
           value: 'Manage storage',
-          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
+          onClick: () => setActiveScreen('storage'),
         },
       ],
     },
@@ -81,13 +78,13 @@ const Settings: React.FC = () => {
           icon: LifeBuoy,
           label: 'Help & Support',
           value: 'Get help',
-          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
+          onClick: () => setActiveScreen('help'),
         },
         {
           icon: Info,
           label: 'About',
           value: 'App information',
-          onClick: () => toast.info('Coming Soon!', { description: 'This feature is under development.' }),
+          onClick: () => setActiveScreen('about'),
         },
       ],
     },

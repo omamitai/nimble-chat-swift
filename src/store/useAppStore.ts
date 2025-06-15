@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type Screen = 'home' | 'contacts' | 'settings' | 'profile' | 'call' | 'notification_settings' | 'font_size_settings' | 'theme_settings';
+export type Screen = 'home' | 'contacts' | 'settings' | 'profile' | 'call' | 'notification_settings' | 'font_size_settings' | 'theme_settings' | 'privacy_security' | 'data_usage' | 'storage' | 'help' | 'about';
 
 export interface Contact {
   id: string;
@@ -238,6 +238,14 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({
       notifications: { ...notifications, ...settings },
     });
+    // FUTURE: When integrating with a native push notification service (e.g., Capacitor Push Notifications),
+    // you can add calls here to register/unregister the device or update native settings.
+    // For example:
+    // if (settings.enabled === true) {
+    //   PushNotifications.register();
+    // } else if (settings.enabled === false) {
+    //   PushNotifications.unregister();
+    // }
   },
   
   addCallRecord: (record) => {

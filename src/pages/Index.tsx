@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import Home from '@/components/Home';
@@ -6,9 +7,14 @@ import Settings from '@/components/Settings';
 import Profile from '@/components/Profile';
 import Call from '@/components/Call';
 import BottomNavbar from '@/components/BottomNavbar';
-import NotificationSettings from '@/components/NotificationSettings';
-import FontSizeSettings from '@/components/FontSizeSettings';
-import ThemeSettings from '@/components/ThemeSettings';
+import NotificationSettings from '@/components/settings/NotificationSettings';
+import FontSizeSettings from '@/components/settings/FontSizeSettings';
+import ThemeSettings from '@/components/settings/ThemeSettings';
+import PrivacySecurity from '@/components/settings/PrivacySecurity';
+import DataUsage from '@/components/settings/DataUsage';
+import Storage from '@/components/settings/Storage';
+import Help from '@/components/settings/Help';
+import About from '@/components/settings/About';
 import { cn } from '@/lib/utils';
 
 const Index: React.FC = () => {
@@ -44,12 +50,26 @@ const Index: React.FC = () => {
         return <FontSizeSettings />;
       case 'theme_settings':
         return <ThemeSettings />;
+      case 'privacy_security':
+        return <PrivacySecurity />;
+      case 'data_usage':
+        return <DataUsage />;
+      case 'storage':
+        return <Storage />;
+      case 'help':
+        return <Help />;
+      case 'about':
+        return <About />;
       default:
         return <Home />;
     }
   };
 
-  const showNavbar = !['call', 'profile', 'notification_settings', 'font_size_settings', 'theme_settings'].includes(activeScreen);
+  const subScreens = [
+    'call', 'profile', 'notification_settings', 'font_size_settings', 
+    'theme_settings', 'privacy_security', 'data_usage', 'storage', 'help', 'about'
+  ];
+  const showNavbar = !subScreens.includes(activeScreen);
 
   return (
     <div className="h-screen w-full bg-background text-foreground overflow-hidden">

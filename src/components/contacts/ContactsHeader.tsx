@@ -15,19 +15,25 @@ const ContactsHeader: React.FC<ContactsHeaderProps> = ({ contactsCount }) => {
         const inviteText = 'Join me on SecureCall for free encrypted voice and video calls!';
         const inviteUrl = window.location.origin;
 
-        try {
-            if (navigator.share) {
+        if (navigator.share) {
+            try {
                 await navigator.share({ title: 'Join SecureCall', text: inviteText, url: inviteUrl });
                 toast.success('Invite shared successfully!');
-            } else {
-                await navigator.clipboard.writeText(`${inviteText} ${inviteUrl}`);
-                setCopied(true);
-                toast.success('Invite link copied to clipboard!');
-                setTimeout(() => setCopied(false), 2000);
+                return;
+            } catch (error) {
+                // Fallback to clipboard if share fails (e.g., in iframe or permission denied)
+                console.log('navigator.share failed, falling back to clipboard.', error);
             }
+        }
+
+        try {
+            await navigator.clipboard.writeText(`${inviteText} ${inviteUrl}`);
+            setCopied(true);
+            toast.success('Invite link copied to clipboard!');
+            setTimeout(() => setCopied(false), 2000);
         } catch (error) {
-            console.error('Failed to share/copy invite:', error);
-            toast.error('Could not share or copy invite link.');
+            console.error('Failed to copy invite link:', error);
+            toast.error('Could not copy invite link.');
         }
     };
 
