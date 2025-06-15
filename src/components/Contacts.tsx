@@ -1,6 +1,6 @@
 
 import React, { useMemo, useState } from 'react';
-import { ArrowLeft, Search, UserPlus, Phone, Video, Share2, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Search, UserPlus, Phone, Video, Share2, MessageCircle, Users } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
@@ -88,11 +88,9 @@ const Contacts: React.FC = () => {
         url: window.location.origin
       });
     } else {
-      // Fallback for browsers without Web Share API
       const inviteText = `Join me on SecureCall for free encrypted voice and video calls! ${window.location.origin}`;
       navigator.clipboard.writeText(inviteText);
-      // In a real app, you'd show a toast notification here
-      alert('Invite link copied to clipboard!');
+      console.log('Invite link copied to clipboard!');
     }
   };
 
@@ -102,67 +100,76 @@ const Contacts: React.FC = () => {
     const now = new Date();
     const diff = now.getTime() - lastSeen.getTime();
     
-    if (diff < 60000) return 'last seen just now';
-    if (diff < 3600000) return `last seen ${Math.floor(diff / 60000)}m ago`;
-    if (diff < 86400000) return `last seen ${Math.floor(diff / 3600000)}h ago`;
+    if (diff < 60000) return 'just now';
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
     
-    return `last seen ${lastSeen.toLocaleDateString('en', { 
+    return lastSeen.toLocaleDateString('en', { 
       month: 'short', 
       day: 'numeric' 
-    })}`;
+    });
   };
 
   return (
     <div className="flex flex-col h-full bg-background">
       {/* Header */}
-      <div className="safe-area-top">
-        <div className="flex items-center space-x-3 p-4 border-b border-border/50">
+      <div className="safe-area-top bg-background/95 backdrop-blur-sm border-b border-border/50">
+        <div className="flex items-center space-x-4 px-6 py-4">
           <button
             onClick={() => setActiveScreen('chatList')}
             className="tap-target p-2 -ml-2 hover:bg-muted rounded-full transition-smooth"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <h1 className="text-xl font-semibold">Contacts</h1>
-          <div className="flex-1" />
+          <div className="flex-1">
+            <h1 className="text-xl font-semibold">Contacts</h1>
+            <p className="text-sm text-muted-foreground">
+              {filteredContacts.length} contact{filteredContacts.length !== 1 ? 's' : ''}
+            </p>
+          </div>
           <Button
             onClick={handleInviteFriends}
             size="sm"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
           >
-            <UserPlus className="w-4 h-4 mr-2" />
+            <Share2 className="w-4 h-4 mr-2" />
             Invite
           </Button>
         </div>
 
         {/* Search Bar */}
-        <div className="p-4 border-b border-border/50">
+        <div className="px-6 pb-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search contacts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-muted rounded-full text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="w-full pl-12 pr-4 py-3 bg-muted/50 rounded-2xl text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 border-0"
             />
           </div>
         </div>
 
-        {/* Invite Friends Banner */}
-        <div className="mx-4 my-2 p-4 bg-primary/10 rounded-xl border border-primary/20">
+        {/* Invite Friends Card */}
+        <div className="mx-6 mb-4 p-4 bg-gradient-to-r from-primary/10 to-blue-500/10 rounded-2xl border border-primary/20">
           <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <h3 className="font-medium text-primary">Invite Friends</h3>
-              <p className="text-xs text-primary/80 mt-1">
-                Share SecureCall with friends for free encrypted calls
-              </p>
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                <Users className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground">Invite Friends</h3>
+                <p className="text-xs text-muted-foreground">
+                  Share SecureCall for encrypted calls
+                </p>
+              </div>
             </div>
             <Button
               onClick={handleInviteFriends}
               size="sm"
               variant="outline"
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              className="border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground"
             >
               <Share2 className="w-4 h-4" />
             </Button>
@@ -174,11 +181,11 @@ const Contacts: React.FC = () => {
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         {filteredContacts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-              <UserPlus className="w-8 h-8 text-primary" />
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+              <Users className="w-10 h-10 text-primary" />
             </div>
-            <h3 className="text-lg font-medium mb-2">No contacts found</h3>
-            <p className="text-muted-foreground text-sm mb-4">
+            <h3 className="text-xl font-semibold mb-2">No contacts found</h3>
+            <p className="text-muted-foreground text-sm mb-6 max-w-xs">
               {searchQuery ? 'Try a different search term' : 'Invite friends to start calling'}
             </p>
             <Button onClick={handleInviteFriends} className="bg-primary hover:bg-primary/90">
@@ -187,80 +194,83 @@ const Contacts: React.FC = () => {
             </Button>
           </div>
         ) : (
-          <div className="divide-y divide-border/50">
+          <div>
             {groupedContacts.map(group => (
               <div key={group.letter}>
                 {/* Section Header */}
-                <div className="sticky top-0 bg-background/90 backdrop-blur-sm border-b border-border/30 px-4 py-2">
-                  <h3 className="text-sm font-medium text-muted-foreground">
+                <div className="sticky top-0 bg-background/95 backdrop-blur-sm border-b border-border/20 px-6 py-3">
+                  <h3 className="text-sm font-semibold text-primary uppercase tracking-wider">
                     {group.letter}
                   </h3>
                 </div>
 
                 {/* Contacts in this section */}
-                {group.contacts.map(contact => (
-                  <div
-                    key={contact.id}
-                    className={cn(
-                      'flex items-center space-x-3 p-4 hover:bg-muted/50 transition-smooth',
-                      contact.isBlocked && 'opacity-50'
-                    )}
-                  >
-                    <Avatar
-                      src={contact.avatar}
-                      name={contact.name}
-                      size="lg"
-                      isOnline={contact.isOnline}
-                    />
-                    
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-medium truncate">
-                          {contact.name}
-                          {contact.isBlocked && (
-                            <span className="ml-2 text-xs text-destructive">Blocked</span>
-                          )}
-                        </h3>
-                      </div>
+                <div className="divide-y divide-border/30">
+                  {group.contacts.map(contact => (
+                    <div
+                      key={contact.id}
+                      className={cn(
+                        'flex items-center space-x-4 px-6 py-4 hover:bg-muted/30 transition-smooth',
+                        contact.isBlocked && 'opacity-50'
+                      )}
+                    >
+                      <Avatar
+                        src={contact.avatar}
+                        name={contact.name}
+                        size="lg"
+                        isOnline={contact.isOnline}
+                        className="ring-2 ring-background shadow-sm"
+                      />
                       
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-muted-foreground">
-                          {contact.phone}
-                        </p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <h3 className="font-semibold truncate text-foreground">
+                            {contact.name}
+                            {contact.isBlocked && (
+                              <span className="ml-2 text-xs text-destructive font-medium">Blocked</span>
+                            )}
+                          </h3>
+                        </div>
                         
-                        {!contact.isOnline && contact.lastSeen && (
-                          <span className="text-xs text-muted-foreground">
-                            {formatLastSeen(contact.lastSeen)}
-                          </span>
-                        )}
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-muted-foreground">
+                            {contact.phone}
+                          </p>
+                          
+                          {!contact.isOnline && contact.lastSeen && (
+                            <span className="text-xs text-muted-foreground">
+                              {formatLastSeen(contact.lastSeen)}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Call Actions */}
-                    {!contact.isBlocked && (
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => handleVoiceCall(contact.id)}
-                          className="tap-target p-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth"
-                        >
-                          <Phone className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleVideoCall(contact.id)}
-                          className="tap-target p-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth"
-                        >
-                          <Video className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleMessage(contact.id)}
-                          className="tap-target p-3 bg-muted hover:bg-muted/80 text-muted-foreground rounded-full transition-smooth"
-                        >
-                          <MessageCircle className="w-4 h-4" />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                      {/* Call Actions */}
+                      {!contact.isBlocked && (
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() => handleVoiceCall(contact.id)}
+                            className="tap-target w-12 h-12 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth flex items-center justify-center shadow-sm"
+                          >
+                            <Phone className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => handleVideoCall(contact.id)}
+                            className="tap-target w-12 h-12 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth flex items-center justify-center shadow-sm"
+                          >
+                            <Video className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => handleMessage(contact.id)}
+                            className="tap-target w-12 h-12 bg-muted/50 hover:bg-muted text-muted-foreground rounded-full transition-smooth flex items-center justify-center"
+                          >
+                            <MessageCircle className="w-5 h-5" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

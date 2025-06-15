@@ -3,77 +3,58 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design system colors optimized for messaging app */
-
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 240 15% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 240 15% 9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 221.2 83.2% 53.3%; /* Blue-600 */
+    --popover-foreground: 240 15% 9%;
+    --primary: 221 83% 53%;
     --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-
+    --ring: 221 83% 53%;
     --radius: 0.75rem;
-
-    /* Message bubble colors */
-    --message-sent: 142 76% 94%; /* Green-50 */
-    --message-received: 210 40% 96.1%; /* Gray-100 */
+    
+    /* App specific colors */
+    --message-sent: 142 76% 36%;
+    --message-received: 210 40% 96%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 240 15% 9%;
     --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
+    --card: 240 15% 11%;
     --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
+    --popover: 240 15% 11%;
     --popover-foreground: 210 40% 98%;
-
-    --primary: 217.2 91.2% 59.8%; /* Blue-500 */
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 240 15% 9%;
+    --secondary: 240 15% 15%;
     --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 240 15% 15%;
     --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 240 15% 15%;
     --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 62.8% 56.9%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-
-    /* Message bubble colors for dark theme */
-    --message-sent: 215.4 16.3% 25.9%; /* Slate-800 */
-    --message-received: 217.2 32.6% 17.5%; /* Gray-800 */
+    --border: 240 15% 15%;
+    --input: 240 15% 15%;
+    --ring: 217 91% 60%;
+    
+    /* App specific colors for dark mode */
+    --message-sent: 217 91% 60%;
+    --message-received: 240 15% 15%;
   }
 }
 
@@ -81,71 +62,126 @@
   * {
     @apply border-border;
   }
-
   body {
-    @apply bg-background text-foreground font-sans;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    overscroll-behavior: none;
   }
-
-  /* Mobile-first responsive typography */
-  html {
-    font-size: 16px;
+  
+  html, body {
+    height: 100%;
+    overflow: hidden;
   }
-
-  /* Safe area handling for mobile */
-  .safe-area-top {
-    padding-top: env(safe-area-inset-top);
+  
+  /* Smooth scrolling for all scrollable areas */
+  .custom-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
-
-  .safe-area-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  /* Custom scrollbar */
+  
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: hsl(var(--muted));
-    border-radius: 3px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground));
+    display: none;
   }
 }
 
-@layer utilities {
-  /* Touch-friendly tap targets */
+@layer components {
   .tap-target {
-    @apply min-h-[44px] min-w-[44px];
+    @apply active:scale-95 active:opacity-80;
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
   }
-
-  /* Message bubble styling */
-  .message-bubble {
-    @apply max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed;
-  }
-
-  .message-sent {
-    @apply bg-message-sent text-foreground ml-auto;
-  }
-
-  .message-received {
-    @apply bg-message-received text-foreground mr-auto;
-  }
-
-  /* Smooth transitions */
+  
   .transition-smooth {
-    @apply transition-all duration-200 ease-out;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
+  
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Custom button styles for better touch experience */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-full font-semibold shadow-lg tap-target transition-smooth hover:bg-primary/90;
+  }
+  
+  .btn-secondary {
+    @apply bg-muted text-foreground px-6 py-3 rounded-full font-medium tap-target transition-smooth hover:bg-muted/80;
+  }
+  
+  /* Message bubble styles */
+  .message-sent {
+    @apply bg-primary text-primary-foreground ml-auto;
+  }
+  
+  .message-received {
+    @apply bg-muted text-foreground mr-auto;
+  }
+  
+  /* Loading animations */
+  .pulse-ring {
+    @apply absolute inset-0 rounded-full border-2 border-white/40;
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.2);
+      opacity: 0;
+    }
+  }
+}
 
-  /* Glass effect */
-  .glass {
-    @apply bg-background/80 backdrop-blur-md border border-border/50;
+/* Enhanced animations */
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
   }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes typing {
+  0% {
+    transform: translateY(0px);
+  }
+  28% {
+    transform: translateY(-8px);
+  }
+  44% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+.animate-typing {
+  animation: typing 1.6s ease-in-out infinite;
+}
+
+/* Focus styles for accessibility */
+button:focus-visible,
+input:focus-visible {
+  @apply outline-none ring-2 ring-primary/50 ring-offset-2;
+}
+
+/* Prevent text selection on UI elements */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
