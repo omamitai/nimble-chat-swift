@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MessageSquare, Users, Settings } from 'lucide-react';
 import { useAppStore, Screen } from '@/store/useAppStore';
@@ -27,9 +26,6 @@ const NavItem: React.FC<NavItemProps> = ({ screen, label, Icon }) => {
       <span className={cn('text-xs', isActive ? 'font-semibold' : 'font-medium')}>
         {label}
       </span>
-      {isActive && (
-        <div className="w-1.5 h-1.5 bg-primary rounded-full absolute bottom-1.5 animate-fade-in"></div>
-      )}
     </button>
   );
 };

@@ -22,7 +22,7 @@ const ChatList: React.FC = () => {
   
   // Favorite contacts for Quick Call are now based on the isFavorite flag
   const favoriteContacts = useMemo(() => {
-    return contacts.filter(c => c.isFavorite).slice(0, 5);
+    return contacts.filter(c => c.isFavorite).slice(0, 4);
   }, [contacts]);
 
   const filteredConversations = useMemo(() => {
@@ -103,9 +103,9 @@ const ChatList: React.FC = () => {
     <div className="flex flex-col h-full bg-background">
       {/* Header */}
       <div className="safe-area-top">
-        <div className="flex items-center justify-between px-6 py-4 bg-background border-b border-border/50">
+        <div className="relative flex items-center justify-center px-6 py-4 bg-background border-b border-border/50">
           <h1 className="text-2xl font-bold">Chats</h1>
-          <div className="flex items-center space-x-1">
+          <div className="absolute right-6 flex items-center space-x-1">
             <button 
               className="tap-target p-3 hover:bg-primary/10 rounded-full transition-smooth group"
               onClick={() => setShowSearchBar(!showSearchBar)}
@@ -140,22 +140,14 @@ const ChatList: React.FC = () => {
 
         {/* Quick Call Section */}
         <div className="px-6 py-5 border-b border-border/30">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-sm font-semibold text-foreground flex items-center">
-                <PhoneCall className="w-4 h-4 mr-2 text-primary" />
-                Quick Call
-              </h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Your favorite contacts</p>
-            </div>
-            <button
-              onClick={() => setActiveScreen('contacts')}
-              className="text-xs text-primary hover:text-primary/80 font-semibold px-3 py-1.5 rounded-full hover:bg-primary/10 transition-smooth"
-            >
-              View all
-            </button>
+          <div className="text-center mb-4">
+            <h3 className="text-sm font-semibold text-foreground flex items-center justify-center">
+              <PhoneCall className="w-4 h-4 mr-2 text-primary" />
+              Quick Call
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5">Your favorite contacts</p>
           </div>
-          <div className="flex space-x-4 overflow-x-auto pb-2 -mx-6 px-6 custom-scrollbar">
+          <div className="flex justify-center space-x-4 overflow-x-auto pb-2 -mx-6 px-6 custom-scrollbar">
             {favoriteContacts.map(contact => (
               <div key={contact.id} className="flex-shrink-0 text-center group w-20">
                 <div className="relative">
@@ -300,16 +292,6 @@ const ChatList: React.FC = () => {
             ))}
           </div>
         )}
-      </div>
-
-      {/* Floating Action Button */}
-      <div className="absolute bottom-8 right-6 safe-area-bottom">
-        <button
-          onClick={() => setActiveScreen('contacts')}
-          className="w-16 h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow-lg hover:shadow-xl tap-target flex items-center justify-center transition-all hover:scale-110 hover:rotate-3"
-        >
-          <Users className="w-6 h-6" />
-        </button>
       </div>
     </div>
   );

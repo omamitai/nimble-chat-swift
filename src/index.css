@@ -1,62 +1,63 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 15% 9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 15% 9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 15% 9%;
-    --primary: 217 95% 65%;
+    --background: 220 50% 98%;
+    --foreground: 220 15% 20%;
+    --card: 220 40% 100%;
+    --card-foreground: 220 15% 20%;
+    --popover: 220 40% 100%;
+    --popover-foreground: 220 15% 20%;
+    --primary: 220 95% 65%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
+    --secondary: 220 40% 94%;
     --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
+    --muted: 220 40% 94%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
+    --accent: 220 40% 94%;
     --accent-foreground: 222.2 84% 4.9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 215 80% 55%;
+    --border: 220 20% 88%;
+    --input: 220 20% 91%;
+    --ring: 220 80% 55%;
     --radius: 1.5rem;
     
     /* App specific colors */
-    --message-sent: 217 85% 60%;
-    --message-received: 210 40% 96%;
+    --message-sent: 220 85% 60%;
+    --message-received: 220 40% 94%;
     --online: 142 76% 36%;
     --call-background: 220 30% 12%;
   }
 
   .dark {
-    --background: 240 15% 9%;
-    --foreground: 210 40% 98%;
-    --card: 240 15% 11%;
-    --card-foreground: 210 40% 98%;
-    --popover: 240 15% 11%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217 90% 70%;
+    --background: 220 25% 12%;
+    --foreground: 220 25% 95%;
+    --card: 220 25% 15%;
+    --card-foreground: 220 25% 95%;
+    --popover: 220 25% 15%;
+    --popover-foreground: 220 25% 95%;
+    --primary: 220 92% 70%;
     --primary-foreground: 217 19% 11%;
-    --secondary: 240 15% 15%;
+    --secondary: 220 25% 18%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 240 15% 15%;
+    --muted: 220 25% 18%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 240 15% 15%;
+    --accent: 220 25% 18%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 56.9%;
     --destructive-foreground: 210 40% 98%;
-    --border: 240 15% 15%;
-    --input: 240 15% 15%;
-    --ring: 215 80% 65%;
+    --border: 220 20% 25%;
+    --input: 220 20% 25%;
+    --ring: 220 80% 65%;
     --radius: 1.5rem;
     
     /* App specific colors for dark mode */
-    --message-sent: 217 80% 70%;
-    --message-received: 240 15% 15%;
+    --message-sent: 220 S80% 70%;
+    --message-received: 220 25% 18%;
     --online: 142 76% 36%;
     --call-background: 220 30% 12%;
   }
