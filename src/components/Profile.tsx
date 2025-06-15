@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { ArrowLeft, Camera, Share2, Archive } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import Avatar from './Avatar';
 import { toast } from 'sonner';
+import { copyToClipboard } from '@/utils/helpers';
 
 const Profile: React.FC = () => {
   const { currentUser, setActiveScreen, updateProfile } = useAppStore();
@@ -14,6 +16,7 @@ const Profile: React.FC = () => {
   const handleSave = () => {
     updateProfile({ name, about });
     setIsEditing(false);
+    toast.success('Profile updated successfully!');
   };
 
   const handleCancel = () => {
@@ -28,11 +31,13 @@ const Profile: React.FC = () => {
       text: `Connect with me on SecureCall: ${currentUser.name} (${currentUser.username})`,
       url: window.location.origin,
     };
+    
     try {
-      if (navigator.share) {
+      if (navigator.share && navigator.canShare?.(shareData)) {
         await navigator.share(shareData);
+        toast.success('Profile shared successfully!');
       } else {
-        await navigator.clipboard.writeText(shareData.text);
+        await copyToClipboard(shareData.text);
         toast.success('Profile info copied to clipboard!');
       }
     } catch (err) {
@@ -42,7 +47,24 @@ const Profile: React.FC = () => {
   };
 
   const handleBackupProfile = () => {
-    toast.info('Profile backup functionality is coming soon!');
+    const profileData = {
+      ...currentUser,
+      exportedAt: new Date().toISOString(),
+    };
+    
+    const dataStr = JSON.stringify(profileData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `securecall-profile-${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    toast.success('Profile backup downloaded!');
   };
 
   return (

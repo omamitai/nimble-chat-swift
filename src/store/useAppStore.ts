@@ -1,26 +1,14 @@
+
 import { create } from 'zustand';
+import { createAuthSlice, AuthSlice } from './slices/authSlice';
+import { createUiSlice, UiSlice } from './slices/uiSlice';
+import { createContactsSlice, ContactsSlice, Contact } from './slices/contactsSlice';
+import { createCallSlice, CallSlice } from './slices/callSlice';
 
-export type Screen = 'home' | 'contacts' | 'settings' | 'profile' | 'call' | 'notification_settings' | 'font_size_settings' | 'theme_settings' | 'privacy_security' | 'data_usage' | 'storage' | 'help' | 'about';
-
-export interface Contact {
-  id: string;
-  name: string;
-  username: string;
-  avatar?: string;
-  isOnline: boolean;
-  lastSeen?: Date;
-  isBlocked?: boolean;
-  isFavorite?: boolean;
-}
-
-export interface CallRecord {
-  id: string;
-  contactId: string;
-  type: 'voice' | 'video';
-  direction: 'incoming' | 'outgoing' | 'missed';
-  timestamp: Date;
-  duration?: number;
-}
+// Re-export types for convenience
+export type { Contact } from './slices/contactsSlice';
+export type { CallRecord, ActiveCall } from './slices/callSlice';
+export type { Screen } from './slices/uiSlice';
 
 export interface UserProfile {
   id: string;
@@ -36,57 +24,14 @@ export interface NotificationSettings {
   vibration: boolean;
 }
 
-export interface ActiveCall {
-  id: string;
-  contactId: string;
-  type: 'voice' | 'video';
-  status: 'connecting' | 'ringing' | 'connected' | 'ended';
-  startTime: Date;
-  isMuted: boolean;
-  isSpeakerOn: boolean;
-  isVideoOff: boolean;
-}
-
-interface AppState {
-  // UI State
-  activeScreen: Screen;
-  searchQuery: string;
-  isSearching: boolean;
-  showSearchBar: boolean;
-  theme: 'light' | 'dark' | 'auto';
-  
-  // Data State
-  contacts: Contact[];
-  callHistory: CallRecord[];
+interface AppState extends AuthSlice, UiSlice, ContactsSlice, CallSlice {
   currentUser: UserProfile;
-  activeCall: ActiveCall | null;
-  
-  // Settings
-  fontSize: 'small' | 'medium' | 'large';
   notifications: NotificationSettings;
-  
-  // Actions
-  setActiveScreen: (screen: Screen) => void;
-  setSearchQuery: (query: string) => void;
-  setSearching: (searching: boolean) => void;
-  setShowSearchBar: (show: boolean) => void;
-  setTheme: (theme: 'light' | 'dark' | 'auto') => void;
-  setFontSize: (size: 'small' | 'medium' | 'large') => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
-  toggleContactBlock: (contactId: string) => void;
-  toggleFavorite: (contactId: string) => void;
   updateNotificationSettings: (settings: Partial<NotificationSettings>) => void;
-  addCallRecord: (record: CallRecord) => void;
-  
-  // Call Actions
-  startCall: (contactId: string, type: 'voice' | 'video') => void;
-  endCall: () => void;
-  toggleMute: () => void;
-  toggleSpeaker: () => void;
-  toggleVideo: () => void;
 }
 
-// Mock data with usernames
+// Mock data for development
 const mockContacts: Contact[] = [
   {
     id: '1',
@@ -140,194 +85,37 @@ const mockContacts: Contact[] = [
   },
 ];
 
-const mockCallHistory: CallRecord[] = [
-  {
-    id: 'call1',
-    contactId: '1',
-    type: 'video',
-    direction: 'outgoing',
-    timestamp: new Date(Date.now() - 3600000),
-    duration: 120,
-  },
-  {
-    id: 'call2',
-    contactId: '2',
-    type: 'voice',
-    direction: 'incoming',
-    timestamp: new Date(Date.now() - 7200000),
-    duration: 45,
-  },
-  {
-    id: 'call3',
-    contactId: '3',
-    type: 'voice',
-    direction: 'missed',
-    timestamp: new Date(Date.now() - 86400000),
-  },
-];
-
-export const useAppStore = create<AppState>((set, get) => ({
-  // Initial state
-  activeScreen: 'home',
-  searchQuery: '',
-  isSearching: false,
-  showSearchBar: false,
-  theme: 'auto',
+export const useAppStore = create<AppState>((set, get, api) => ({
+  // Combine all slices
+  ...createAuthSlice(set, get, api),
+  ...createUiSlice(set, get, api),
+  ...createContactsSlice(set, get, api),
+  ...createCallSlice(set, get, api),
   
-  contacts: mockContacts,
-  callHistory: mockCallHistory,
+  // Initial data
   currentUser: {
     id: 'me',
     name: 'You',
     username: '@you',
     about: 'Secure calling made simple',
   },
-  activeCall: null,
-  
-  fontSize: 'medium',
   notifications: {
     enabled: true,
     sound: true,
     vibration: true,
   },
   
-  // Actions
-  setActiveScreen: (screen) => set({ activeScreen: screen }),
+  // Initialize with mock data
+  contacts: mockContacts,
   
-  setSearchQuery: (query) => set({ searchQuery: query }),
-  
-  setSearching: (searching) => set({ isSearching: searching }),
-  
-  setShowSearchBar: (show) => set({ showSearchBar: show }),
-  
-  setTheme: (theme) => set({ theme }),
-  
-  setFontSize: (size) => set({ fontSize: size }),
-  
+  // Profile actions
   updateProfile: (updates) => {
     const { currentUser } = get();
-    set({
-      currentUser: { ...currentUser, ...updates },
-    });
-  },
-  
-  toggleContactBlock: (contactId) => {
-    const { contacts } = get();
-    set({
-      contacts: contacts.map(contact =>
-        contact.id === contactId 
-          ? { ...contact, isBlocked: !contact.isBlocked }
-          : contact
-      ),
-    });
-  },
-  
-  toggleFavorite: (contactId) => {
-    const { contacts } = get();
-    set({
-      contacts: contacts.map(contact =>
-        contact.id === contactId
-          ? { ...contact, isFavorite: !contact.isFavorite }
-          : contact
-      ),
-    });
+    set({ currentUser: { ...currentUser, ...updates } });
   },
   
   updateNotificationSettings: (settings) => {
     const { notifications } = get();
-    set({
-      notifications: { ...notifications, ...settings },
-    });
-    // FUTURE: When integrating with a native push notification service (e.g., Capacitor Push Notifications),
-    // you can add calls here to register/unregister the device or update native settings.
-    // For example:
-    // if (settings.enabled === true) {
-    //   PushNotifications.register();
-    // } else if (settings.enabled === false) {
-    //   PushNotifications.unregister();
-    // }
-  },
-  
-  addCallRecord: (record) => {
-    const { callHistory } = get();
-    set({
-      callHistory: [record, ...callHistory],
-    });
-  },
-  
-  startCall: (contactId, type) => {
-    const newCall: ActiveCall = {
-      id: `call-${Date.now()}`,
-      contactId,
-      type,
-      status: 'connecting',
-      startTime: new Date(),
-      isMuted: false,
-      isSpeakerOn: false,
-      isVideoOff: false,
-    };
-    
-    set({ activeCall: newCall });
-    
-    setTimeout(() => {
-      const { activeCall } = get();
-      if (activeCall?.id === newCall.id) {
-        set({ 
-          activeCall: { ...activeCall, status: 'ringing' }
-        });
-      }
-    }, 1000);
-    
-    setTimeout(() => {
-      const { activeCall } = get();
-      if (activeCall?.id === newCall.id) {
-        set({ 
-          activeCall: { ...activeCall, status: 'connected' }
-        });
-      }
-    }, 3000);
-  },
-  
-  endCall: () => {
-    const { activeCall, addCallRecord } = get();
-    if (activeCall) {
-      const duration = Math.floor((Date.now() - activeCall.startTime.getTime()) / 1000);
-      addCallRecord({
-        id: `record-${Date.now()}`,
-        contactId: activeCall.contactId,
-        type: activeCall.type,
-        direction: 'outgoing',
-        timestamp: activeCall.startTime,
-        duration: activeCall.status === 'connected' ? duration : undefined,
-      });
-    }
-    set({ activeCall: null });
-  },
-  
-  toggleMute: () => {
-    const { activeCall } = get();
-    if (activeCall) {
-      set({
-        activeCall: { ...activeCall, isMuted: !activeCall.isMuted }
-      });
-    }
-  },
-  
-  toggleSpeaker: () => {
-    const { activeCall } = get();
-    if (activeCall) {
-      set({
-        activeCall: { ...activeCall, isSpeakerOn: !activeCall.isSpeakerOn }
-      });
-    }
-  },
-  
-  toggleVideo: () => {
-    const { activeCall } = get();
-    if (activeCall) {
-      set({
-        activeCall: { ...activeCall, isVideoOff: !activeCall.isVideoOff }
-      });
-    }
+    set({ notifications: { ...notifications, ...settings } });
   },
 }));
