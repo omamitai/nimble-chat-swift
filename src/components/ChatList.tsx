@@ -290,7 +290,7 @@ const ChatList: React.FC = () => {
                   </button>
                   <button
                     onClick={(e) => handleListVideoCall(e, conversation.id)}
-                    className="call-button-voice"
+                    className="call-button-video"
                     title="Video call"
                   >
                     <Video className="w-5 h-5" />

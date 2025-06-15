@@ -245,7 +245,7 @@ const Contacts: React.FC = () => {
                           </button>
                           <button
                             onClick={() => handleVideoCall(contact.id)}
-                            className="call-button-voice"
+                            className="call-button-video"
                           >
                             <Video className="w-5 h-5" />
                           </button>
