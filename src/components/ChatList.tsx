@@ -204,13 +204,6 @@ const ChatList: React.FC = () => {
             <p className="text-muted-foreground text-sm mb-6 max-w-xs">
               {searchQuery ? 'No matches found' : 'Start a secure call or message with your contacts'}
             </p>
-            <button
-              onClick={() => setActiveScreen('contacts')}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-full font-medium transition-smooth"
-            >
-              <Users className="w-4 h-4 mr-2 inline" />
-              View Contacts
-            </button>
           </div>
         ) : (
           <div className="divide-y divide-border/20">
