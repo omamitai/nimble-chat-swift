@@ -21,9 +21,9 @@ const ChatList: React.FC = () => {
 
   const [pullOffset, setPullOffset] = useState(0);
   
-  // Simulate favorite contacts for Quick Call
+  // Favorite contacts for Quick Call are now based on the isFavorite flag
   const favoriteContacts = useMemo(() => {
-    return contacts.filter(c => ['2', '4', '5', '8'].includes(c.id)).slice(0, 5);
+    return contacts.filter(c => c.isFavorite).slice(0, 5);
   }, [contacts]);
 
   const filteredConversations = useMemo(() => {
@@ -132,7 +132,7 @@ const ChatList: React.FC = () => {
                 placeholder="Search conversations..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-background/80 backdrop-blur-sm rounded-2xl text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 border border-border/50 shadow-sm"
+                className="w-full pl-12 pr-4 py-4 bg-muted/50 backdrop-blur-sm rounded-2xl text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 border border-border/50"
                 autoFocus
               />
             </div>
@@ -307,7 +307,7 @@ const ChatList: React.FC = () => {
       <div className="absolute bottom-8 right-6 safe-area-bottom">
         <button
           onClick={() => setActiveScreen('contacts')}
-          className="w-16 h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow-xl tap-target flex items-center justify-center transition-all hover:scale-110 hover:rotate-3"
+          className="w-16 h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow-lg hover:shadow-xl tap-target flex items-center justify-center transition-all hover:scale-110 hover:rotate-3"
         >
           <Users className="w-6 h-6" />
         </button>

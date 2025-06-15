@@ -14,6 +14,7 @@ const Contacts: React.FC = () => {
     setSelectedChat,
     addMessage,
     startCall,
+    toggleFavorite,
   } = useAppStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -94,10 +95,13 @@ const Contacts: React.FC = () => {
     }
   };
 
-  const handleToggleFavorite = (contactName: string) => {
-    // In a real app, this would update the zustand store.
-    // For now, we just show a toast.
-    toast.success(`${contactName} added to Quick Call`);
+  const handleToggleFavorite = (contactId: string, isFavorite: boolean | undefined, contactName: string) => {
+    toggleFavorite(contactId);
+    if (!isFavorite) {
+      toast.success(`${contactName} added to Quick Call`);
+    } else {
+      toast.info(`${contactName} removed from Quick Call`);
+    }
   };
 
   const formatLastSeen = (lastSeen?: Date) => {
@@ -119,7 +123,7 @@ const Contacts: React.FC = () => {
   return (
     <div className="flex flex-col h-full bg-background">
       {/* Header */}
-      <div className="safe-area-top bg-background/95 backdrop-blur-sm border-b border-border/50">
+      <div className="safe-area-top bg-gradient-to-r from-background to-background/95 backdrop-blur-sm border-b border-border/50">
         <div className="flex items-center justify-between px-6 py-4">
           <div>
             <h1 className="text-2xl font-bold">Contacts</h1>
@@ -146,7 +150,7 @@ const Contacts: React.FC = () => {
               placeholder="Search contacts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-muted/50 rounded-xl text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 border-0"
+              className="w-full pl-12 pr-4 py-3 bg-muted/50 rounded-2xl text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 border-0"
             />
           </div>
         </div>
@@ -221,11 +225,11 @@ const Contacts: React.FC = () => {
                       {!contact.isBlocked && (
                         <div className="flex items-center space-x-2">
                            <button
-                              onClick={() => handleToggleFavorite(contact.name)}
+                              onClick={() => handleToggleFavorite(contact.id, contact.isFavorite, contact.name)}
                               className="tap-target w-10 h-10 hover:bg-muted/50 text-muted-foreground rounded-full transition-smooth flex items-center justify-center group"
-                              title="Add to Quick Call"
+                              title={contact.isFavorite ? "Remove from Quick Call" : "Add to Quick Call"}
                             >
-                              <Star className={cn("w-5 h-5 transition-colors", ['2', '4', '5', '8'].includes(contact.id) ? 'text-yellow-400 fill-yellow-400' : 'group-hover:text-yellow-400')} />
+                              <Star className={cn("w-5 h-5 transition-colors", contact.isFavorite ? 'text-yellow-400 fill-yellow-400' : 'group-hover:text-yellow-400')} />
                             </button>
                           <button
                             onClick={() => handleMessage(contact.id)}

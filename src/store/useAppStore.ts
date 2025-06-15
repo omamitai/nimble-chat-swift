@@ -10,6 +10,7 @@ export interface Contact {
   isOnline: boolean;
   lastSeen?: Date;
   isBlocked?: boolean;
+  isFavorite?: boolean;
 }
 
 export interface Message {
@@ -94,6 +95,7 @@ interface AppState {
   setTypingStatus: (chatId: string, isTyping: boolean) => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
   toggleContactBlock: (contactId: string) => void;
+  toggleFavorite: (contactId: string) => void;
   updateNotificationSettings: (settings: Partial<NotificationSettings>) => void;
   
   // Call Actions
@@ -110,8 +112,9 @@ const mockContacts: Contact[] = [
     id: '1',
     name: 'Sarah Chen',
     phone: '+1 555 0101',
-    avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
     isOnline: true,
+    isFavorite: false,
   },
   {
     id: '2', 
@@ -119,7 +122,8 @@ const mockContacts: Contact[] = [
     phone: '+1 555 0102',
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
     isOnline: false,
-    lastSeen: new Date(Date.now() - 300000), // 5 minutes ago
+    lastSeen: new Date(Date.now() - 300000),
+    isFavorite: true,
   },
   {
     id: '3',
@@ -127,14 +131,50 @@ const mockContacts: Contact[] = [
     phone: '+1 555 0103', 
     avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
     isOnline: true,
+    isFavorite: false,
   },
   {
     id: '4',
-    name: 'Design Team',
-    phone: '',
+    name: 'David Kim',
+    phone: '+1 555 0104',
     avatar: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=150',
     isOnline: false,
+    isFavorite: true,
   },
+  {
+    id: '5',
+    name: 'Chris Lee',
+    phone: '+1 555 0105',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
+    isOnline: true,
+    isFavorite: true,
+  },
+  {
+    id: '6',
+    name: 'Laura Martinez',
+    phone: '+1 555 0106',
+    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150',
+    isOnline: false,
+    lastSeen: new Date(Date.now() - 1.8e+6),
+    isFavorite: false,
+  },
+  {
+    id: '7',
+    name: 'James Brown',
+    phone: '+1 555 0107',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150',
+    isOnline: true,
+    isFavorite: false,
+  },
+  {
+    id: '8',
+    name: 'Alex Taylor',
+    phone: '+1 555 0108',
+    avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150',
+    isOnline: false,
+    lastSeen: new Date(Date.now() - 86400000),
+    isFavorite: true,
+  }
 ];
 
 const mockConversations: Conversation[] = [
@@ -396,6 +436,17 @@ export const useAppStore = create<AppState>((set, get) => ({
       contacts: contacts.map(contact =>
         contact.id === contactId 
           ? { ...contact, isBlocked: !contact.isBlocked }
+          : contact
+      ),
+    });
+  },
+  
+  toggleFavorite: (contactId) => {
+    const { contacts } = get();
+    set({
+      contacts: contacts.map(contact =>
+        contact.id === contactId
+          ? { ...contact, isFavorite: !contact.isFavorite }
           : contact
       ),
     });

@@ -8,6 +8,7 @@ interface AvatarProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'call';
   isOnline?: boolean;
   className?: string;
+  onClick?: () => void;
 }
 
 const Avatar: React.FC<AvatarProps> = ({ 
@@ -15,7 +16,8 @@ const Avatar: React.FC<AvatarProps> = ({
   name, 
   size = 'md', 
   isOnline, 
-  className 
+  className,
+  onClick
 }) => {
   const sizeClasses = {
     xs: 'w-6 h-6 text-xs',
@@ -45,7 +47,7 @@ const Avatar: React.FC<AvatarProps> = ({
   };
 
   return (
-    <div className={cn('relative flex-shrink-0', className)}>
+    <div className={cn('relative flex-shrink-0', className)} onClick={onClick}>
       <div className={cn(
         'rounded-full bg-gradient-to-br from-muted to-muted/80 flex items-center justify-center font-semibold text-muted-foreground overflow-hidden ring-2 ring-background/50 shadow-sm',
         sizeClasses[size]
