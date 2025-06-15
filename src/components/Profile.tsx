@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Camera } from 'lucide-react';
+import { ArrowLeft, Camera, Share2, Archive } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import Avatar from './Avatar';
+import { toast } from 'sonner';
 
 const Profile: React.FC = () => {
   const { currentUser, setActiveScreen, updateProfile } = useAppStore();
@@ -19,6 +20,29 @@ const Profile: React.FC = () => {
     setName(currentUser.name);
     setAbout(currentUser.about);
     setIsEditing(false);
+  };
+
+  const handleShareProfile = async () => {
+    const shareData = {
+      title: 'SecureCall Profile',
+      text: `Connect with me on SecureCall: ${currentUser.name} (${currentUser.username})`,
+      url: window.location.origin,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(shareData.text);
+        toast.success('Profile info copied to clipboard!');
+      }
+    } catch (err) {
+      console.error('Error sharing profile:', err);
+      toast.error('Could not share profile.');
+    }
+  };
+
+  const handleBackupProfile = () => {
+    toast.info('Profile backup functionality is coming soon!');
   };
 
   return (
@@ -149,25 +173,37 @@ const Profile: React.FC = () => {
         {/* Actions */}
         {!isEditing && (
           <div className="p-4 space-y-3 mt-8">
-            <button className="w-full p-4 bg-muted hover:bg-muted/80 rounded-lg text-left transition-smooth">
+            <button
+              onClick={handleShareProfile}
+              className="w-full p-4 bg-muted hover:bg-muted/80 rounded-lg text-left transition-smooth"
+            >
               <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-medium text-sm">Share Profile</h4>
-                  <p className="text-xs text-muted-foreground">
-                    Share your profile with QR code
-                  </p>
+                <div className="flex items-center space-x-3">
+                  <Share2 className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <h4 className="font-medium text-sm">Share Profile</h4>
+                    <p className="text-xs text-muted-foreground">
+                      Share your profile with others
+                    </p>
+                  </div>
                 </div>
                 <span className="text-muted-foreground">→</span>
               </div>
             </button>
 
-            <button className="w-full p-4 bg-muted hover:bg-muted/80 rounded-lg text-left transition-smooth">
+            <button
+              onClick={handleBackupProfile}
+              className="w-full p-4 bg-muted hover:bg-muted/80 rounded-lg text-left transition-smooth"
+            >
               <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-medium text-sm">Backup Profile</h4>
-                  <p className="text-xs text-muted-foreground">
-                    Export your profile data
-                  </p>
+                <div className="flex items-center space-x-3">
+                  <Archive className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <h4 className="font-medium text-sm">Backup Profile</h4>
+                    <p className="text-xs text-muted-foreground">
+                      Export your profile data
+                    </p>
+                  </div>
                 </div>
                 <span className="text-muted-foreground">→</span>
               </div>
