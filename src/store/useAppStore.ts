@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 
 export type Screen = 'chatList' | 'conversation' | 'contacts' | 'settings' | 'profile' | 'call';
@@ -51,6 +50,17 @@ export interface NotificationSettings {
   preview: boolean;
 }
 
+export interface ActiveCall {
+  id: string;
+  contactId: string;
+  type: 'voice' | 'video';
+  status: 'connecting' | 'ringing' | 'connected' | 'ended';
+  startTime: Date;
+  isMuted: boolean;
+  isSpeakerOn: boolean;
+  isVideoOff: boolean;
+}
+
 interface AppState {
   // UI State
   activeScreen: Screen;
@@ -65,6 +75,7 @@ interface AppState {
   conversations: Conversation[];
   messages: Record<string, Message[]>;
   currentUser: UserProfile;
+  activeCall: ActiveCall | null;
   
   // Settings
   fontSize: 'small' | 'medium' | 'large';
@@ -84,6 +95,13 @@ interface AppState {
   updateProfile: (updates: Partial<UserProfile>) => void;
   toggleContactBlock: (contactId: string) => void;
   updateNotificationSettings: (settings: Partial<NotificationSettings>) => void;
+  
+  // Call Actions
+  startCall: (contactId: string, type: 'voice' | 'video') => void;
+  endCall: () => void;
+  toggleMute: () => void;
+  toggleSpeaker: () => void;
+  toggleVideo: () => void;
 }
 
 // Mock data
@@ -278,6 +296,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     phone: '+1 555 0100',
     about: 'Building the future of messaging',
   },
+  activeCall: null,
   
   fontSize: 'medium',
   notifications: {
@@ -387,5 +406,71 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({
       notifications: { ...notifications, ...settings },
     });
+  },
+  
+  // Call Actions
+  startCall: (contactId, type) => {
+    const newCall: ActiveCall = {
+      id: `call-${Date.now()}`,
+      contactId,
+      type,
+      status: 'connecting',
+      startTime: new Date(),
+      isMuted: false,
+      isSpeakerOn: false,
+      isVideoOff: false,
+    };
+    
+    set({ activeCall: newCall });
+    
+    // Simulate call progression
+    setTimeout(() => {
+      const { activeCall } = get();
+      if (activeCall?.id === newCall.id) {
+        set({ 
+          activeCall: { ...activeCall, status: 'ringing' }
+        });
+      }
+    }, 1000);
+    
+    setTimeout(() => {
+      const { activeCall } = get();
+      if (activeCall?.id === newCall.id) {
+        set({ 
+          activeCall: { ...activeCall, status: 'connected' }
+        });
+      }
+    }, 3000);
+  },
+  
+  endCall: () => {
+    set({ activeCall: null });
+  },
+  
+  toggleMute: () => {
+    const { activeCall } = get();
+    if (activeCall) {
+      set({
+        activeCall: { ...activeCall, isMuted: !activeCall.isMuted }
+      });
+    }
+  },
+  
+  toggleSpeaker: () => {
+    const { activeCall } = get();
+    if (activeCall) {
+      set({
+        activeCall: { ...activeCall, isSpeakerOn: !activeCall.isSpeakerOn }
+      });
+    }
+  },
+  
+  toggleVideo: () => {
+    const { activeCall } = get();
+    if (activeCall) {
+      set({
+        activeCall: { ...activeCall, isVideoOff: !activeCall.isVideoOff }
+      });
+    }
   },
 }));

@@ -1,9 +1,10 @@
 
 import React, { useMemo, useState } from 'react';
-import { ArrowLeft, Search, Camera } from 'lucide-react';
+import { ArrowLeft, Search, UserPlus, Phone, Video, Share2, MessageCircle } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 const Contacts: React.FC = () => {
   const {
@@ -12,6 +13,7 @@ const Contacts: React.FC = () => {
     setActiveScreen,
     setSelectedChat,
     addMessage,
+    startCall,
   } = useAppStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,7 +38,6 @@ const Contacts: React.FC = () => {
       groups[firstLetter].push(contact);
     });
 
-    // Sort each group and the group keys
     Object.keys(groups).forEach(key => {
       groups[key].sort((a, b) => a.name.localeCompare(b.name));
     });
@@ -49,8 +50,23 @@ const Contacts: React.FC = () => {
       }));
   }, [filteredContacts]);
 
-  const handleContactSelect = (contactId: string) => {
-    // Check if conversation already exists
+  const handleVoiceCall = (contactId: string) => {
+    const contact = contacts.find(c => c.id === contactId);
+    if (contact) {
+      startCall(contactId, 'voice');
+      setActiveScreen('call');
+    }
+  };
+
+  const handleVideoCall = (contactId: string) => {
+    const contact = contacts.find(c => c.id === contactId);
+    if (contact) {
+      startCall(contactId, 'video');
+      setActiveScreen('call');
+    }
+  };
+
+  const handleMessage = (contactId: string) => {
     const existingConversation = conversations.find(conv => 
       conv.participants.includes(contactId) && !conv.isGroup
     );
@@ -59,14 +75,24 @@ const Contacts: React.FC = () => {
       setSelectedChat(existingConversation.id);
       setActiveScreen('conversation');
     } else {
-      // Create new conversation
-      const contact = contacts.find(c => c.id === contactId);
-      if (contact) {
-        // In a real app, this would create a new conversation on the backend
-        console.log('Starting new conversation with:', contact.name);
-        setSelectedChat(contactId);
-        setActiveScreen('conversation');
-      }
+      setSelectedChat(contactId);
+      setActiveScreen('conversation');
+    }
+  };
+
+  const handleInviteFriends = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Join me on SecureCall',
+        text: 'Download SecureCall for free encrypted voice and video calls!',
+        url: window.location.origin
+      });
+    } else {
+      // Fallback for browsers without Web Share API
+      const inviteText = `Join me on SecureCall for free encrypted voice and video calls! ${window.location.origin}`;
+      navigator.clipboard.writeText(inviteText);
+      // In a real app, you'd show a toast notification here
+      alert('Invite link copied to clipboard!');
     }
   };
 
@@ -99,9 +125,14 @@ const Contacts: React.FC = () => {
           </button>
           <h1 className="text-xl font-semibold">Contacts</h1>
           <div className="flex-1" />
-          <button className="tap-target p-2 hover:bg-muted rounded-full transition-smooth">
-            <Camera className="w-5 h-5" />
-          </button>
+          <Button
+            onClick={handleInviteFriends}
+            size="sm"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+          >
+            <UserPlus className="w-4 h-4 mr-2" />
+            Invite
+          </Button>
         </div>
 
         {/* Search Bar */}
@@ -117,19 +148,43 @@ const Contacts: React.FC = () => {
             />
           </div>
         </div>
+
+        {/* Invite Friends Banner */}
+        <div className="mx-4 my-2 p-4 bg-primary/10 rounded-xl border border-primary/20">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <h3 className="font-medium text-primary">Invite Friends</h3>
+              <p className="text-xs text-primary/80 mt-1">
+                Share SecureCall with friends for free encrypted calls
+              </p>
+            </div>
+            <Button
+              onClick={handleInviteFriends}
+              size="sm"
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+            >
+              <Share2 className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Contacts List */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         {filteredContacts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-              <Camera className="w-8 h-8 text-muted-foreground" />
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <UserPlus className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-lg font-medium mb-2">No contacts found</h3>
-            <p className="text-muted-foreground text-sm">
-              {searchQuery ? 'Try a different search term' : 'Add contacts to start messaging'}
+            <p className="text-muted-foreground text-sm mb-4">
+              {searchQuery ? 'Try a different search term' : 'Invite friends to start calling'}
             </p>
+            <Button onClick={handleInviteFriends} className="bg-primary hover:bg-primary/90">
+              <UserPlus className="w-4 h-4 mr-2" />
+              Invite Friends
+            </Button>
           </div>
         ) : (
           <div className="divide-y divide-border/50">
@@ -147,10 +202,9 @@ const Contacts: React.FC = () => {
                   <div
                     key={contact.id}
                     className={cn(
-                      'flex items-center space-x-3 p-4 hover:bg-muted/50 active:bg-muted transition-smooth cursor-pointer',
+                      'flex items-center space-x-3 p-4 hover:bg-muted/50 transition-smooth',
                       contact.isBlocked && 'opacity-50'
                     )}
-                    onClick={() => !contact.isBlocked && handleContactSelect(contact.id)}
                   >
                     <Avatar
                       src={contact.avatar}
@@ -181,6 +235,30 @@ const Contacts: React.FC = () => {
                         )}
                       </div>
                     </div>
+
+                    {/* Call Actions */}
+                    {!contact.isBlocked && (
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => handleVoiceCall(contact.id)}
+                          className="tap-target p-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth"
+                        >
+                          <Phone className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleVideoCall(contact.id)}
+                          className="tap-target p-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth"
+                        >
+                          <Video className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleMessage(contact.id)}
+                          className="tap-target p-3 bg-muted hover:bg-muted/80 text-muted-foreground rounded-full transition-smooth"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

@@ -6,6 +6,7 @@ import Conversation from '@/components/Conversation';
 import Contacts from '@/components/Contacts';
 import Settings from '@/components/Settings';
 import Profile from '@/components/Profile';
+import Call from '@/components/Call';
 
 const Index: React.FC = () => {
   const { activeScreen, theme, setTheme } = useAppStore();
@@ -46,6 +47,8 @@ const Index: React.FC = () => {
         return <Settings />;
       case 'profile':
         return <Profile />;
+      case 'call':
+        return <Call />;
       default:
         return <ChatList />;
     }
