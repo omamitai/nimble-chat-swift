@@ -1,11 +1,60 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
+import React, { useEffect } from 'react';
+import { useAppStore } from '@/store/useAppStore';
+import ChatList from '@/components/ChatList';
+import Conversation from '@/components/Conversation';
+import Contacts from '@/components/Contacts';
+import Settings from '@/components/Settings';
+import Profile from '@/components/Profile';
+
+const Index: React.FC = () => {
+  const { activeScreen, theme, setTheme } = useAppStore();
+
+  // Initialize theme on mount
+  useEffect(() => {
+    setTheme(theme);
+  }, []);
+
+  // Handle system theme changes
+  useEffect(() => {
+    if (theme === 'auto') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleChange = () => {
+        if (mediaQuery.matches) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      };
+
+      handleChange(); // Set initial theme
+      mediaQuery.addEventListener('change', handleChange);
+      
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
+  }, [theme]);
+
+  const renderScreen = () => {
+    switch (activeScreen) {
+      case 'chatList':
+        return <ChatList />;
+      case 'conversation':
+        return <Conversation />;
+      case 'contacts':
+        return <Contacts />;
+      case 'settings':
+        return <Settings />;
+      case 'profile':
+        return <Profile />;
+      default:
+        return <ChatList />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="h-screen w-full bg-background text-foreground overflow-hidden">
+      <div className="h-full max-w-md mx-auto relative">
+        {renderScreen()}
       </div>
     </div>
   );
