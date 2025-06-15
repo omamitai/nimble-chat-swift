@@ -1,3 +1,4 @@
+
 import React, { useMemo, useState } from 'react';
 import { ArrowLeft, Search, UserPlus, Phone, Video, Share2, MessageCircle, Users, Star } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
@@ -123,7 +124,7 @@ const Contacts: React.FC = () => {
   return (
     <div className="flex flex-col h-full bg-background">
       {/* Header */}
-      <div className="safe-area-top bg-gradient-to-r from-background to-background/95 backdrop-blur-sm border-b border-border/50">
+      <div className="safe-area-top bg-background border-b border-border/50">
         <div className="flex items-center justify-between px-6 py-4">
           <div>
             <h1 className="text-2xl font-bold">Contacts</h1>

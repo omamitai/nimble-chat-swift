@@ -104,8 +104,8 @@ const ChatList: React.FC = () => {
     <div className="flex flex-col h-full bg-background">
       {/* Header */}
       <div className="safe-area-top">
-        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-background to-background/95 backdrop-blur-sm border-b border-border/50">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">SecureCall</h1>
+        <div className="flex items-center justify-between px-6 py-4 bg-background border-b border-border/50">
+          <h1 className="text-2xl font-bold">Chats</h1>
           <div className="flex items-center space-x-1">
             <button 
               className="tap-target p-3 hover:bg-primary/10 rounded-full transition-smooth group"
@@ -124,7 +124,7 @@ const ChatList: React.FC = () => {
 
         {/* Search Bar */}
         {showSearchBar && (
-          <div className="px-6 py-4 border-b border-border/50 animate-slide-up bg-gradient-to-r from-background to-muted/20">
+          <div className="px-6 py-4 border-b border-border/50 animate-slide-up bg-background">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
@@ -281,7 +281,7 @@ const ChatList: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-2 ml-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center space-x-2 ml-3 transition-opacity">
                   <button
                     onClick={(e) => handleListVoiceCall(e, conversation.id)}
                     className="call-button-voice w-9 h-9"
