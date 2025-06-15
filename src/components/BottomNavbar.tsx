@@ -42,8 +42,8 @@ const BottomNavbar: React.FC = () => {
   ];
 
   return (
-    <div className="safe-area-bottom fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-background/90 backdrop-blur-lg border-t border-border/50">
-      <div className="flex items-center justify-around h-20 px-2">
+    <div className="safe-area-bottom fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-md">
+      <div className="flex items-center justify-around h-16 px-2 bg-background/80 backdrop-blur-xl border border-border/60 rounded-full shadow-lg">
         {navItems.map((item) => (
           <div key={item.screen} className="flex-1 flex items-center justify-center h-full">
             <NavItem {...item} />

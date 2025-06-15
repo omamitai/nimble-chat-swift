@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Search, Phone, Video, Settings, Users, PhoneCall, UserPlus } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
@@ -284,17 +283,17 @@ const ChatList: React.FC = () => {
                 <div className="flex items-center space-x-2 ml-3 transition-opacity">
                   <button
                     onClick={(e) => handleListVoiceCall(e, conversation.id)}
-                    className="call-button-voice w-9 h-9"
+                    className="call-button-voice"
                     title="Voice call"
                   >
-                    <Phone className="w-4 h-4" />
+                    <Phone className="w-5 h-5" />
                   </button>
                   <button
                     onClick={(e) => handleListVideoCall(e, conversation.id)}
-                    className="call-button-video w-9 h-9"
+                    className="call-button-voice"
                     title="Video call"
                   >
-                    <Video className="w-4 h-4" />
+                    <Video className="w-5 h-5" />
                   </button>
                 </div>
               </div>

@@ -1,4 +1,3 @@
-
 import React, { useMemo, useState } from 'react';
 import { ArrowLeft, Search, UserPlus, Phone, Video, Share2, MessageCircle, Users, Star } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
@@ -240,9 +239,15 @@ const Contacts: React.FC = () => {
                           </button>
                           <button
                             onClick={() => handleVoiceCall(contact.id)}
-                            className="tap-target w-10 h-10 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth flex items-center justify-center"
+                            className="call-button-voice"
                           >
                             <Phone className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => handleVideoCall(contact.id)}
+                            className="call-button-voice"
+                          >
+                            <Video className="w-5 h-5" />
                           </button>
                         </div>
                       )}
