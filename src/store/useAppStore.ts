@@ -172,7 +172,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   searchQuery: '',
   isSearching: false,
   showSearchBar: false,
-  theme: 'light',
+  theme: 'auto',
   
   contacts: mockContacts,
   callHistory: mockCallHistory,
@@ -200,20 +200,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   
   setShowSearchBar: (show) => set({ showSearchBar: show }),
   
-  setTheme: (theme) => {
-    set({ theme });
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else if (theme === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
-  },
+  setTheme: (theme) => set({ theme }),
   
   setFontSize: (size) => set({ fontSize: size }),
   
@@ -260,7 +247,6 @@ export const useAppStore = create<AppState>((set, get) => ({
     });
   },
   
-  // Call Actions
   startCall: (contactId, type) => {
     const newCall: ActiveCall = {
       id: `call-${Date.now()}`,

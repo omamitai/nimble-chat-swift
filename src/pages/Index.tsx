@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import Home from '@/components/Home';
@@ -13,29 +12,19 @@ import ThemeSettings from '@/components/ThemeSettings';
 import { cn } from '@/lib/utils';
 
 const Index: React.FC = () => {
-  const { activeScreen, theme, setTheme } = useAppStore();
+  const { activeScreen, theme } = useAppStore();
 
-  // Initialize theme on mount
-  useEffect(() => {
-    setTheme(theme);
-  }, []);
-
-  // Handle system theme changes
   useEffect(() => {
     if (theme === 'auto') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const handleChange = () => {
-        if (mediaQuery.matches) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+      const applyTheme = () => {
+        document.documentElement.classList.toggle('dark', mediaQuery.matches);
       };
-
-      handleChange(); // Set initial theme
-      mediaQuery.addEventListener('change', handleChange);
-      
-      return () => mediaQuery.removeEventListener('change', handleChange);
+      applyTheme();
+      mediaQuery.addEventListener('change', applyTheme);
+      return () => mediaQuery.removeEventListener('change', applyTheme);
+    } else {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
     }
   }, [theme]);
 
@@ -65,7 +54,7 @@ const Index: React.FC = () => {
   return (
     <div className="h-screen w-full bg-background text-foreground overflow-hidden">
       <div className="h-full max-w-md mx-auto relative">
-        <div className={cn("absolute inset-0", showNavbar && "bottom-20")}>
+        <div className={cn("absolute inset-0", showNavbar && "pb-20")}>
            {renderScreen()}
         </div>
         {showNavbar && <BottomNavbar />}
