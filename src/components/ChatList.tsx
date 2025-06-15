@@ -228,7 +228,7 @@ const ChatList: React.FC = () => {
             {filteredConversations.map((conversation) => (
               <div
                 key={conversation.id}
-                className="flex items-center space-x-4 px-6 py-4 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10 active:bg-muted/50 transition-all cursor-pointer group"
+                className="flex items-center space-x-4 px-6 py-5 hover:bg-gradient-to-r hover:from-muted/30 hover:to-muted/10 active:bg-muted/50 transition-all cursor-pointer group"
                 onClick={() => handleChatSelect(conversation.id)}
               >
                 <Avatar
@@ -255,7 +255,7 @@ const ChatList: React.FC = () => {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2 min-w-0">
+                    <div className="flex items-center space-x-2 min-w-0 flex-1">
                       {conversation.isTyping ? (
                         <div className="flex items-center space-x-1 text-primary">
                           <div className="flex space-x-1">
@@ -276,31 +276,28 @@ const ChatList: React.FC = () => {
                     </div>
                     
                     {conversation.unreadCount > 0 && (
-                      <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-full min-w-[24px] flex items-center justify-center ml-2 shadow-sm">
+                      <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-full min-w-[24px] flex items-center justify-center shadow-sm">
                         {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
                       </div>
                     )}
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                {/* Always visible call buttons with improved design */}
+                <div className="flex items-center space-x-1.5 ml-3">
                   <button
                     onClick={(e) => handleListVoiceCall(e, conversation.id)}
-                    className="tap-target p-2.5 hover:bg-primary/15 text-muted-foreground hover:text-primary rounded-xl transition-all hover:scale-110"
+                    className="tap-target w-10 h-10 bg-gradient-to-br from-primary/10 to-primary/5 hover:from-primary/20 hover:to-primary/10 text-primary rounded-xl flex items-center justify-center transition-all hover:scale-110 border border-primary/20 hover:border-primary/40 shadow-sm hover:shadow-md"
+                    title="Voice call"
                   >
                     <Phone className="w-4 h-4" />
                   </button>
                   <button
                     onClick={(e) => handleListVideoCall(e, conversation.id)}
-                    className="tap-target p-2.5 hover:bg-blue-500/15 text-muted-foreground hover:text-blue-500 rounded-xl transition-all hover:scale-110"
+                    className="tap-target w-10 h-10 bg-gradient-to-br from-blue-500/10 to-blue-500/5 hover:from-blue-500/20 hover:to-blue-500/10 text-blue-500 rounded-xl flex items-center justify-center transition-all hover:scale-110 border border-blue-500/20 hover:border-blue-500/40 shadow-sm hover:shadow-md"
+                    title="Video call"
                   >
                     <Video className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={(e) => e.stopPropagation()}
-                    className="tap-target p-2.5 hover:bg-muted text-muted-foreground rounded-xl transition-all hover:scale-110"
-                  >
-                    <MessageCircle className="w-4 h-4" />
                   </button>
                 </div>
               </div>
