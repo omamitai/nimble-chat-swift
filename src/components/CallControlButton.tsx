@@ -25,8 +25,8 @@ const CallControlButton: React.FC<CallControlButtonProps> = ({
         className={cn(
           'tap-target w-[72px] h-[72px] rounded-full flex items-center justify-center transition-all duration-200 ease-out',
           isActive
-            ? 'bg-white text-black'
-            : 'bg-white/20 hover:bg-white/30 backdrop-blur-sm'
+            ? 'bg-white text-call-background'
+            : 'bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white/90'
         )}
       >
         <Icon className="w-8 h-8" />

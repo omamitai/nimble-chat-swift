@@ -57,6 +57,7 @@ export default {
 				'message-received': 'hsl(var(--message-received))',
 				'online': 'hsl(142 76% 36%)',
 				'offline': 'hsl(var(--muted-foreground))',
+				'call-background': 'hsl(var(--call-background))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

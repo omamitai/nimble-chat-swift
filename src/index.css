@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,7 +10,7 @@
     --card-foreground: 240 15% 9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 15% 9%;
-    --primary: 217 85% 60%;
+    --primary: 217 95% 65%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96%;
     --secondary-foreground: 222.2 84% 4.9%;
@@ -30,6 +29,7 @@
     --message-sent: 217 85% 60%;
     --message-received: 210 40% 96%;
     --online: 142 76% 36%;
+    --call-background: 220 30% 12%;
   }
 
   .dark {
@@ -39,7 +39,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 240 15% 11%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217 80% 70%;
+    --primary: 217 90% 70%;
     --primary-foreground: 217 19% 11%;
     --secondary: 240 15% 15%;
     --secondary-foreground: 210 40% 98%;
@@ -58,6 +58,7 @@
     --message-sent: 217 80% 70%;
     --message-received: 240 15% 15%;
     --online: 142 76% 36%;
+    --call-background: 220 30% 12%;
   }
 }
 

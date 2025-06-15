@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { PhoneOff, Mic, MicOff, Video, VideoOff, Volume2, VolumeX, MessageCircle } from 'lucide-react';
+import { PhoneOff, Mic, MicOff, Video, VideoOff, Volume2, VolumeX, MessageCircle, ShieldCheck } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
@@ -80,13 +80,13 @@ const Call: React.FC = () => {
 
   return (
     <div 
-      className="h-full bg-slate-900 text-white relative overflow-hidden flex flex-col"
+      className="h-full bg-call-background text-white relative overflow-hidden flex flex-col"
       onClick={() => setShowControls(true)}
     >
       {/* Enhanced Background Pattern */}
-      <div className="absolute inset-0 opacity-40">
-        <div className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-primary/30 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute -top-1/4 -right-1/4 w-2/3 h-2/3 bg-rose-500/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
+      <div className="absolute inset-0 opacity-50">
+        <div className="absolute -bottom-1/3 -left-1/2 w-full h-2/3 bg-primary/20 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute -top-1/4 -right-1/2 w-full h-2/3 bg-primary/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Header (Simplified) */}
@@ -94,8 +94,8 @@ const Call: React.FC = () => {
         'safe-area-top px-6 py-5 transition-all duration-300 z-10',
         showControls ? 'opacity-100' : 'opacity-0'
       )}>
-        <div className="flex items-center space-x-3">
-            <div className='w-2 h-2 rounded-full bg-green-400 shadow-sm' />
+        <div className="flex items-center space-x-2">
+            <ShieldCheck className="w-4 h-4 text-green-400" />
             <span className="text-sm text-white/90 capitalize font-medium">
               Secure Call
             </span>
@@ -104,16 +104,18 @@ const Call: React.FC = () => {
 
       {/* Contact Info - Centered and Refined */}
       <div className="flex-1 flex flex-col items-center justify-center text-center px-8 z-10 space-y-6">
+        <div className="relative">
           <Avatar
             src={contact.avatar}
             name={contact.name}
             size="call"
-            className="relative z-10 ring-4 ring-white/10 shadow-2xl"
+            className="relative z-10 ring-4 ring-primary/30 shadow-2xl"
           />
           
           {(activeCall.status === 'connecting' || activeCall.status === 'ringing') && (
-            <div className="absolute -inset-2 rounded-full border border-white/30 animate-ping" style={{ animationDelay: '0.5s' }} />
+            <div className="absolute -inset-2 rounded-full border-2 border-primary/50 animate-ping" style={{ animationDelay: '0.5s' }} />
           )}
+        </div>
         
         <div className="space-y-2">
           <h1 className="text-4xl font-bold tracking-tight text-white">
