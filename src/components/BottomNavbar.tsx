@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { MessageSquare, Users, Settings } from 'lucide-react';
+import { Phone, Users, Settings, Clock } from 'lucide-react';
 import { useAppStore, Screen } from '@/store/useAppStore';
 import { cn } from '@/lib/utils';
 
@@ -32,7 +33,7 @@ const NavItem: React.FC<NavItemProps> = ({ screen, label, Icon }) => {
 
 const BottomNavbar: React.FC = () => {
   const navItems: NavItemProps[] = [
-    { screen: 'chatList', label: 'Chats', Icon: MessageSquare },
+    { screen: 'contacts', label: 'Home', Icon: Phone },
     { screen: 'contacts', label: 'Contacts', Icon: Users },
     { screen: 'settings', label: 'Settings', Icon: Settings },
   ];
@@ -40,8 +41,8 @@ const BottomNavbar: React.FC = () => {
   return (
     <div className="safe-area-bottom fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-md">
       <div className="flex items-center justify-around h-16 px-2 bg-background/80 backdrop-blur-xl border border-border/60 rounded-full shadow-lg">
-        {navItems.map((item) => (
-          <div key={item.screen} className="flex-1 flex items-center justify-center h-full">
+        {navItems.map((item, index) => (
+          <div key={`${item.screen}-${index}`} className="flex-1 flex items-center justify-center h-full">
             <NavItem {...item} />
           </div>
         ))}

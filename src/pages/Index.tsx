@@ -1,8 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { useAppStore } from '@/store/useAppStore';
-import ChatList from '@/components/ChatList';
-import Conversation from '@/components/Conversation';
+import Home from '@/components/Home';
 import Contacts from '@/components/Contacts';
 import Settings from '@/components/Settings';
 import Profile from '@/components/Profile';
@@ -39,12 +38,8 @@ const Index: React.FC = () => {
 
   const renderScreen = () => {
     switch (activeScreen) {
-      case 'chatList':
-        return <ChatList />;
-      case 'conversation':
-        return <Conversation />;
       case 'contacts':
-        return <Contacts />;
+        return activeScreen === 'contacts' ? <Home /> : <Contacts />;
       case 'settings':
         return <Settings />;
       case 'profile':
@@ -52,11 +47,11 @@ const Index: React.FC = () => {
       case 'call':
         return <Call />;
       default:
-        return <ChatList />;
+        return <Home />;
     }
   };
 
-  const showNavbar = !['conversation', 'call', 'profile'].includes(activeScreen);
+  const showNavbar = !['call', 'profile'].includes(activeScreen);
 
   return (
     <div className="h-screen w-full bg-background text-foreground overflow-hidden">

@@ -49,16 +49,21 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <div className={cn('relative flex-shrink-0', className)} onClick={onClick}>
       <div className={cn(
-        'rounded-full bg-gradient-to-br from-muted to-muted/80 flex items-center justify-center font-semibold text-muted-foreground overflow-hidden ring-2 ring-background/50 shadow-sm',
+        'rounded-full bg-gradient-to-br from-muted to-muted/80 flex items-center justify-center font-semibold text-muted-foreground overflow-hidden shadow-sm',
         sizeClasses[size]
       )}>
         {src ? (
           <img 
             src={src} 
             alt={name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-full"
             onError={(e) => {
-              e.currentTarget.style.display = 'none';
+              const target = e.currentTarget;
+              target.style.display = 'none';
+              const parent = target.parentElement;
+              if (parent) {
+                parent.innerHTML = `<span class="select-none">${getInitials(name)}</span>`;
+              }
             }}
           />
         ) : (
