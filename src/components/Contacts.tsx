@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowLeft, Search, UserPlus, Phone, Video, Share2, MessageCircle, Users } from 'lucide-react';
+import { ArrowLeft, Search, UserPlus, Phone, Video, Share2, MessageCircle, Users, Star } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 const Contacts: React.FC = () => {
   const {
@@ -93,6 +94,12 @@ const Contacts: React.FC = () => {
     }
   };
 
+  const handleToggleFavorite = (contactName: string) => {
+    // In a real app, this would update the zustand store.
+    // For now, we just show a toast.
+    toast.success(`${contactName} added to Quick Call`);
+  };
+
   const formatLastSeen = (lastSeen?: Date) => {
     if (!lastSeen) return '';
     
@@ -139,7 +146,7 @@ const Contacts: React.FC = () => {
               placeholder="Search contacts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-muted/50 rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 border-0"
+              className="w-full pl-12 pr-4 py-3 bg-muted/50 rounded-xl text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 border-0"
             />
           </div>
         </div>
@@ -178,7 +185,7 @@ const Contacts: React.FC = () => {
                     <div
                       key={contact.id}
                       className={cn(
-                        'flex items-center space-x-4 px-6 py-4 hover:bg-muted/30 transition-smooth',
+                        'flex items-center space-x-4 px-6 py-4 hover:bg-muted/20 transition-smooth group',
                         contact.isBlocked && 'opacity-50'
                       )}
                     >
@@ -194,9 +201,6 @@ const Contacts: React.FC = () => {
                         <div className="flex items-center justify-between mb-1">
                           <h3 className="font-semibold truncate text-foreground">
                             {contact.name}
-                            {contact.isBlocked && (
-                              <span className="ml-2 text-xs text-destructive font-medium">Blocked</span>
-                            )}
                           </h3>
                         </div>
                         
@@ -216,23 +220,24 @@ const Contacts: React.FC = () => {
                       {/* Call Actions */}
                       {!contact.isBlocked && (
                         <div className="flex items-center space-x-2">
-                          <button
-                            onClick={() => handleVoiceCall(contact.id)}
-                            className="tap-target w-12 h-12 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth flex items-center justify-center shadow-sm"
-                          >
-                            <Phone className="w-5 h-5" />
-                          </button>
-                          <button
-                            onClick={() => handleVideoCall(contact.id)}
-                            className="tap-target w-12 h-12 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth flex items-center justify-center shadow-sm"
-                          >
-                            <Video className="w-5 h-5" />
-                          </button>
+                           <button
+                              onClick={() => handleToggleFavorite(contact.name)}
+                              className="tap-target w-10 h-10 hover:bg-muted/50 text-muted-foreground rounded-full transition-smooth flex items-center justify-center group"
+                              title="Add to Quick Call"
+                            >
+                              <Star className={cn("w-5 h-5 transition-colors", ['2', '4', '5', '8'].includes(contact.id) ? 'text-yellow-400 fill-yellow-400' : 'group-hover:text-yellow-400')} />
+                            </button>
                           <button
                             onClick={() => handleMessage(contact.id)}
-                            className="tap-target w-12 h-12 bg-muted/50 hover:bg-muted text-muted-foreground rounded-full transition-smooth flex items-center justify-center"
+                            className="tap-target w-10 h-10 bg-muted/50 hover:bg-muted text-muted-foreground rounded-full transition-smooth flex items-center justify-center"
                           >
                             <MessageCircle className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => handleVoiceCall(contact.id)}
+                            className="tap-target w-10 h-10 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-smooth flex items-center justify-center"
+                          >
+                            <Phone className="w-5 h-5" />
                           </button>
                         </div>
                       )}

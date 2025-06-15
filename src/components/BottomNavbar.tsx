@@ -35,7 +35,7 @@ const NavItem: React.FC<NavItemProps> = ({ screen, label, Icon }) => {
 };
 
 const BottomNavbar: React.FC = () => {
-  const navItems: Omit<NavItemProps, 'Icon'> & { Icon: React.ElementType }[] = [
+  const navItems: NavItemProps[] = [
     { screen: 'chatList', label: 'Chats', Icon: MessageSquare },
     { screen: 'contacts', label: 'Contacts', Icon: Users },
     { screen: 'settings', label: 'Settings', Icon: Settings },

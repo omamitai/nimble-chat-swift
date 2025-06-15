@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,7 +23,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221 83% 53%;
-    --radius: 1.25rem;
+    --radius: 1.5rem;
     
     /* App specific colors */
     --message-sent: 142 76% 36%;
@@ -52,7 +51,7 @@
     --border: 240 15% 15%;
     --input: 240 15% 15%;
     --ring: 217 91% 60%;
-    --radius: 1.25rem;
+    --radius: 1.5rem;
     
     /* App specific colors for dark mode */
     --message-sent: 217 91% 60%;
@@ -123,24 +122,24 @@
   
   /* Enhanced button styles */
   .btn-primary {
-    @apply bg-gradient-to-r from-primary to-primary/90 text-primary-foreground px-6 py-3 rounded-lg font-semibold shadow-md tap-target transition-smooth hover:shadow-lg hover:scale-105 border border-primary/20;
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-full font-semibold shadow-sm tap-target transition-smooth hover:bg-primary/90 border-0;
   }
   
   .btn-secondary {
-    @apply bg-gradient-to-r from-muted to-muted/80 text-foreground px-6 py-3 rounded-lg font-medium tap-target transition-smooth hover:shadow-md hover:scale-105 border border-border;
+    @apply bg-muted text-foreground px-6 py-3 rounded-full font-medium tap-target transition-smooth hover:bg-muted/80 border border-border;
   }
   
   /* Enhanced call button styles */
   .call-button {
-    @apply w-10 h-10 rounded-lg flex items-center justify-center transition-all hover:scale-110 shadow-sm hover:shadow-md border tap-target;
+    @apply w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 shadow-sm hover:shadow-md border tap-target;
   }
   
   .call-button-voice {
-    @apply call-button bg-gradient-to-br from-primary/10 to-primary/5 hover:from-primary/20 hover:to-primary/10 text-primary border-primary/20 hover:border-primary/40;
+    @apply call-button bg-primary/10 hover:bg-primary/20 text-primary border-primary/20;
   }
   
   .call-button-video {
-    @apply call-button bg-gradient-to-br from-blue-500/10 to-blue-500/5 hover:from-blue-500/20 hover:to-blue-500/10 text-blue-500 border-blue-500/20 hover:border-blue-500/40;
+    @apply call-button bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 border-blue-500/20;
   }
   
   /* Enhanced message bubble styles */
@@ -149,12 +148,12 @@
   }
   
   .message-sent {
-    @apply bg-gradient-to-br from-primary to-primary/90 text-primary-foreground ml-auto rounded-br-lg border-primary/20;
+    @apply bg-primary text-primary-foreground ml-auto rounded-br-lg border-0;
     box-shadow: 0 4px 20px 0 hsl(var(--primary) / 15%);
   }
   
   .message-received {
-    @apply bg-gradient-to-br from-muted to-muted/80 text-foreground mr-auto rounded-bl-lg border-border;
+    @apply bg-muted text-foreground mr-auto rounded-bl-lg border-border;
     box-shadow: 0 2px 12px 0 hsl(var(--muted) / 20%);
   }
   
@@ -285,7 +284,7 @@ textarea:focus-visible {
 
 /* Enhanced card styles */
 .card-enhanced {
-  @apply bg-card border border-border rounded-2xl shadow-sm hover:shadow-md transition-all duration-200;
+  @apply bg-card border border-border rounded-3xl shadow-sm hover:shadow-md transition-all duration-200;
 }
 
 .card-interactive {
