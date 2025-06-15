@@ -1,6 +1,6 @@
 
 // Centralized API service for backend integration
-const API_BASE_URL = process.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 // Types for API requests/responses
 export interface ApiResponse<T = any> {
@@ -12,6 +12,15 @@ export interface ApiResponse<T = any> {
 export interface AuthTokens {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  avatar?: string;
+  about?: string;
 }
 
 // Generic API client
@@ -33,13 +42,13 @@ class ApiClient {
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
-    const headers: HeadersInit = {
+    const headers = new Headers({
       'Content-Type': 'application/json',
       ...options.headers,
-    };
+    });
 
     if (this.accessToken) {
-      headers.Authorization = `Bearer ${this.accessToken}`;
+      headers.set('Authorization', `Bearer ${this.accessToken}`);
     }
 
     try {
@@ -63,29 +72,48 @@ class ApiClient {
 
   // Auth methods
   async login(username: string, password: string) {
-    const response = await this.request<AuthTokens>('/auth/login', {
+    const response = await this.request<{ user: User; tokens: AuthTokens }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     });
     
     if (response.success && response.data) {
-      this.setTokens(response.data);
+      this.setTokens(response.data.tokens);
     }
     
     return response;
   }
 
-  async register(userData: { name: string; username: string; password: string }) {
-    return this.request<AuthTokens>('/auth/register', {
+  async register(userData: { name: string; username: string; email: string; password: string }) {
+    return this.request<{ user: User; tokens: AuthTokens }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData),
     });
+  }
+
+  async refreshTokens() {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!refreshToken) {
+      throw new Error('No refresh token available');
+    }
+
+    const response = await this.request<AuthTokens>('/auth/refresh', {
+      method: 'POST',
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (response.success && response.data) {
+      this.setTokens(response.data);
+    }
+
+    return response;
   }
 
   logout() {
     this.accessToken = null;
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
   }
 
   private setTokens(tokens: AuthTokens) {
@@ -96,11 +124,11 @@ class ApiClient {
 
   // Profile methods
   async getProfile() {
-    return this.request('/profile');
+    return this.request<User>('/profile');
   }
 
-  async updateProfile(profileData: any) {
-    return this.request('/profile', {
+  async updateProfile(profileData: Partial<User>) {
+    return this.request<User>('/profile', {
       method: 'PUT',
       body: JSON.stringify(profileData),
     });

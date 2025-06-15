@@ -1,71 +1,80 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, Camera, Share2, Archive } from 'lucide-react';
+import { ArrowLeft, Camera, Share2, Download, Upload, Edit3 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
-import Avatar from './Avatar';
 import { toast } from 'sonner';
-import { copyToClipboard } from '@/utils/helpers';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Profile: React.FC = () => {
-  const { currentUser, setActiveScreen, updateProfile } = useAppStore();
-  
+  const { user, updateUser, setActiveScreen, clearAuth } = useAppStore();
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(currentUser.name);
-  const [about, setAbout] = useState(currentUser.about);
+  const [editData, setEditData] = useState({
+    name: user?.name || '',
+    about: user?.about || '',
+  });
 
   const handleSave = () => {
-    updateProfile({ name, about });
-    setIsEditing(false);
-    toast.success('Profile updated successfully!');
-  };
-
-  const handleCancel = () => {
-    setName(currentUser.name);
-    setAbout(currentUser.about);
-    setIsEditing(false);
+    if (user) {
+      updateUser(editData);
+      setIsEditing(false);
+      toast.success('Profile updated successfully');
+    }
   };
 
   const handleShareProfile = async () => {
-    const shareData = {
-      title: 'SecureCall Profile',
-      text: `Connect with me on SecureCall: ${currentUser.name} (${currentUser.username})`,
-      url: window.location.origin,
-    };
+    const profileUrl = `${window.location.origin}/profile/${user?.username}`;
     
-    try {
-      if (navigator.share && navigator.canShare?.(shareData)) {
-        await navigator.share(shareData);
-        toast.success('Profile shared successfully!');
-      } else {
-        await copyToClipboard(shareData.text);
-        toast.success('Profile info copied to clipboard!');
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `${user?.name}'s SecureCall Profile`,
+          text: `Connect with me on SecureCall`,
+          url: profileUrl,
+        });
+      } catch (error) {
+        // User cancelled share
       }
-    } catch (err) {
-      console.error('Error sharing profile:', err);
-      toast.error('Could not share profile.');
+    } else {
+      try {
+        await navigator.clipboard.writeText(profileUrl);
+        toast.success('Profile link copied to clipboard');
+      } catch (error) {
+        toast.error('Failed to copy profile link');
+      }
     }
   };
 
   const handleBackupProfile = () => {
     const profileData = {
-      ...currentUser,
-      exportedAt: new Date().toISOString(),
+      user,
+      exportDate: new Date().toISOString(),
+      appVersion: '1.0.0',
     };
     
     const dataStr = JSON.stringify(profileData, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
     
     const link = document.createElement('a');
-    link.href = url;
-    link.download = `securecall-profile-${Date.now()}.json`;
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = `securecall-profile-${user?.username}-${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    URL.revokeObjectURL(url);
     
-    toast.success('Profile backup downloaded!');
+    toast.success('Profile backed up successfully');
   };
+
+  const handleLogout = () => {
+    clearAuth();
+    toast.info('Logged out successfully');
+  };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col h-full bg-background">
@@ -81,157 +90,130 @@ const Profile: React.FC = () => {
             </button>
             <h1 className="text-xl font-semibold">Profile</h1>
           </div>
-          
-          {isEditing ? (
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={handleCancel}
-                className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-smooth"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSave}
-                className="px-4 py-2 bg-primary text-primary-foreground text-sm rounded-full hover:bg-primary/90 transition-smooth"
-              >
-                Save
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="px-4 py-2 text-sm text-primary hover:text-primary/80 transition-smooth"
-            >
-              Edit
-            </button>
-          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsEditing(!isEditing)}
+          >
+            <Edit3 className="w-4 h-4" />
+          </Button>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar">
-        {/* Avatar Section */}
-        <div className="flex flex-col items-center py-8 px-4">
-          <div className="relative">
-            <Avatar
-              src={currentUser.avatar}
-              name={currentUser.name}
-              size="xl"
-              className="w-24 h-24"
-            />
-            {isEditing && (
-              <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-lg">
-                <Camera className="w-4 h-4" />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Profile Fields */}
-        <div className="space-y-6 px-4">
-          {/* Name */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">
-              Name
-            </label>
-            {isEditing ? (
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full p-3 bg-muted rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
-                placeholder="Enter your name"
-              />
-            ) : (
-              <div className="p-3 bg-muted rounded-lg">
-                <p className="text-sm">{currentUser.name}</p>
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-6">
+        {/* Profile Picture and Basic Info */}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <button className="absolute bottom-0 right-0 p-2 bg-primary text-primary-foreground rounded-full shadow-lg hover:bg-primary/90 transition-smooth">
+                  <Camera className="w-4 h-4" />
+                </button>
               </div>
-            )}
-          </div>
-
-          {/* About */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">
-              About
-            </label>
-            {isEditing ? (
-              <textarea
-                value={about}
-                onChange={(e) => setAbout(e.target.value)}
-                className="w-full p-3 bg-muted rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
-                placeholder="Tell us about yourself"
-                rows={3}
-              />
-            ) : (
-              <div className="p-3 bg-muted rounded-lg">
-                <p className="text-sm">{currentUser.about}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Username (Read-only) */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">
-              Username
-            </label>
-            <div className="p-3 bg-muted rounded-lg">
-              <p className="text-sm">{currentUser.username}</p>
+              
+              {isEditing ? (
+                <div className="w-full space-y-3">
+                  <div>
+                    <Label htmlFor="name">Full Name</Label>
+                    <Input
+                      id="name"
+                      value={editData.name}
+                      onChange={(e) => setEditData(prev => ({ ...prev, name: e.target.value }))}
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="about">About</Label>
+                    <Input
+                      id="about"
+                      value={editData.about}
+                      onChange={(e) => setEditData(prev => ({ ...prev, about: e.target.value }))}
+                      placeholder="Tell us about yourself"
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={handleSave} className="flex-1">
+                      Save Changes
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setIsEditing(false)}
+                      className="flex-1"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <h2 className="text-xl font-semibold">{user.name}</h2>
+                    <p className="text-muted-foreground">{user.username}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{user.email}</p>
+                  </div>
+                  
+                  {user.about && (
+                    <p className="text-sm text-center px-4">{user.about}</p>
+                  )}
+                </>
+              )}
             </div>
-            <p className="text-xs text-muted-foreground">
-              Username cannot be changed
-            </p>
-          </div>
+          </CardContent>
+        </Card>
 
-          {/* Privacy Notice */}
-          <div className="p-4 bg-muted rounded-lg">
-            <h4 className="font-medium text-sm mb-2">Privacy & Security</h4>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Your profile information is encrypted and only shared with your contacts. 
-              We never store or access your personal data.
-            </p>
-          </div>
-        </div>
-
-        {/* Actions */}
-        {!isEditing && (
-          <div className="p-4 space-y-3 mt-8">
-            <button
+        {/* Profile Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Profile Actions</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Button
+              variant="outline"
+              className="w-full justify-start"
               onClick={handleShareProfile}
-              className="w-full p-4 bg-muted hover:bg-muted/80 rounded-lg text-left transition-smooth"
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Share2 className="w-5 h-5 text-muted-foreground" />
-                  <div>
-                    <h4 className="font-medium text-sm">Share Profile</h4>
-                    <p className="text-xs text-muted-foreground">
-                      Share your profile with others
-                    </p>
-                  </div>
-                </div>
-                <span className="text-muted-foreground">→</span>
-              </div>
-            </button>
-
-            <button
+              <Share2 className="w-4 h-4 mr-2" />
+              Share Profile
+            </Button>
+            
+            <Button
+              variant="outline"
+              className="w-full justify-start"
               onClick={handleBackupProfile}
-              className="w-full p-4 bg-muted hover:bg-muted/80 rounded-lg text-left transition-smooth"
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Archive className="w-5 h-5 text-muted-foreground" />
-                  <div>
-                    <h4 className="font-medium text-sm">Backup Profile</h4>
-                    <p className="text-xs text-muted-foreground">
-                      Export your profile data
-                    </p>
-                  </div>
-                </div>
-                <span className="text-muted-foreground">→</span>
-              </div>
-            </button>
-          </div>
-        )}
+              <Download className="w-4 h-4 mr-2" />
+              Backup Profile
+            </Button>
+            
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              Import Contacts
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Account Management */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Account</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button
+              variant="destructive"
+              className="w-full"
+              onClick={handleLogout}
+            >
+              Sign Out
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -9,29 +9,23 @@ import { createCallSlice, CallSlice } from './slices/callSlice';
 export type { Contact } from './slices/contactsSlice';
 export type { CallRecord, ActiveCall } from './slices/callSlice';
 export type { Screen } from './slices/uiSlice';
-
-export interface UserProfile {
-  id: string;
-  name: string;
-  username: string;
-  avatar?: string;
-  about: string;
-}
+export type { User } from './slices/authSlice';
 
 export interface NotificationSettings {
   enabled: boolean;
   sound: boolean;
   vibration: boolean;
+  callNotifications: boolean;
+  messageNotifications: boolean;
 }
 
 interface AppState extends AuthSlice, UiSlice, ContactsSlice, CallSlice {
-  currentUser: UserProfile;
   notifications: NotificationSettings;
-  updateProfile: (updates: Partial<UserProfile>) => void;
   updateNotificationSettings: (settings: Partial<NotificationSettings>) => void;
+  initializeApp: () => void;
 }
 
-// Mock data for development
+// Mock data for development - will be replaced by API calls
 const mockContacts: Contact[] = [
   {
     id: '1',
@@ -74,15 +68,6 @@ const mockContacts: Contact[] = [
     isOnline: true,
     isFavorite: true,
   },
-  {
-    id: '6',
-    name: 'Laura Martinez',
-    username: '@laura_m',
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150',
-    isOnline: false,
-    lastSeen: new Date(Date.now() - 1.8e+6),
-    isFavorite: false,
-  },
 ];
 
 export const useAppStore = create<AppState>((set, get, api) => ({
@@ -92,30 +77,30 @@ export const useAppStore = create<AppState>((set, get, api) => ({
   ...createContactsSlice(set, get, api),
   ...createCallSlice(set, get, api),
   
-  // Initial data
-  currentUser: {
-    id: 'me',
-    name: 'You',
-    username: '@you',
-    about: 'Secure calling made simple',
-  },
+  // Initial notification settings
   notifications: {
     enabled: true,
     sound: true,
     vibration: true,
+    callNotifications: true,
+    messageNotifications: true,
   },
   
-  // Initialize with mock data
+  // Initialize with mock data for development
   contacts: mockContacts,
-  
-  // Profile actions
-  updateProfile: (updates) => {
-    const { currentUser } = get();
-    set({ currentUser: { ...currentUser, ...updates } });
-  },
   
   updateNotificationSettings: (settings) => {
     const { notifications } = get();
-    set({ notifications: { ...notifications, ...settings } });
+    const updated = { ...notifications, ...settings };
+    localStorage.setItem('notificationSettings', JSON.stringify(updated));
+    set({ notifications: updated });
+  },
+  
+  initializeApp: () => {
+    // Load saved settings
+    const savedNotifications = localStorage.getItem('notificationSettings');
+    if (savedNotifications) {
+      set({ notifications: JSON.parse(savedNotifications) });
+    }
   },
 }));

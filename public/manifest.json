@@ -1,12 +1,14 @@
 
 {
-  "name": "nimble-chat-swift",
+  "name": "SecureCall - End-to-End Encrypted Calling",
   "short_name": "SecureCall",
-  "description": "A secure and fast chat and call application.",
+  "description": "A secure and private calling application with end-to-end encryption.",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#3b82f6",
+  "categories": ["communication", "social", "productivity"],
   "icons": [
     {
       "src": "/placeholder.svg",
@@ -19,6 +21,34 @@
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Call",
+      "short_name": "Call",
+      "description": "Start a new secure call",
+      "url": "/call",
+      "icons": [
+        {
+          "src": "/placeholder.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "short_name": "Contacts",
+      "description": "View your contacts",
+      "url": "/contacts",
+      "icons": [
+        {
+          "src": "/placeholder.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
     }
   ]
 }
