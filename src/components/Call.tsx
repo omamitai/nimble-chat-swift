@@ -124,12 +124,12 @@ const Call: React.FC = () => {
         <div className="flex flex-col items-center space-y-6">
           {/* Avatar with enhanced styling */}
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-blue-400/30 rounded-full blur-xl scale-110" />
+            <div className="absolute -inset-4 bg-gradient-to-br from-primary/30 to-blue-400/30 rounded-full blur-2xl animate-pulse-slow" />
             <Avatar
               src={contact.avatar}
               name={contact.name}
               size="xl"
-              className="w-40 h-40 ring-4 ring-white/30 shadow-2xl relative z-10"
+              className="w-48 h-48 ring-8 ring-white/20 shadow-2xl relative z-10"
             />
             
             {/* Pulse animation for connecting/ringing */}
@@ -140,10 +140,10 @@ const Call: React.FC = () => {
           
           {/* Contact Details */}
           <div className="text-center space-y-3">
-            <h1 className="text-3xl font-bold tracking-tight">{contact.name}</h1>
+            <h1 className="text-4xl font-bold tracking-tight">{contact.name}</h1>
             <div className="space-y-1">
-              <p className="text-xl text-white/90 font-medium">{getCallStatusText()}</p>
-              <p className="text-sm text-white/60">{contact.phone}</p>
+              <p className="text-2xl text-white/90 font-medium">{getCallStatusText()}</p>
+              <p className="text-base text-white/60">{contact.phone}</p>
             </div>
           </div>
 

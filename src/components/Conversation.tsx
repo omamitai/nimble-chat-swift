@@ -133,6 +133,7 @@ const Conversation: React.FC = () => {
             name={conversation.name}
             size="md"
             isOnline={conversation.isOnline}
+            className="border-2 border-background"
           />
           
           <div className="flex-1 min-w-0">
@@ -208,11 +209,12 @@ const Conversation: React.FC = () => {
                       src={conversation.avatar}
                       name={conversation.name}
                       size="sm"
+                      className="border-2 border-background"
                     />
                   )}
                   
                   <div className={cn(
-                    'message-bubble',
+                    'message-bubble max-w-[80%]',
                     isMe ? 'message-sent' : 'message-received'
                   )}>
                     <p className="leading-relaxed">{message.text}</p>

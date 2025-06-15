@@ -24,7 +24,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221 83% 53%;
-    --radius: 0.75rem;
+    --radius: 1rem;
     
     /* App specific colors */
     --message-sent: 142 76% 36%;
@@ -114,12 +114,16 @@
   }
   
   /* Message bubble styles */
+  .message-bubble {
+    @apply p-3 px-4 rounded-3xl;
+  }
   .message-sent {
-    @apply bg-primary text-primary-foreground ml-auto;
+    @apply bg-primary text-primary-foreground ml-auto rounded-br-lg;
+    box-shadow: 0 4px 14px 0 hsl(var(--primary) / 20%);
   }
   
   .message-received {
-    @apply bg-muted text-foreground mr-auto;
+    @apply bg-muted text-foreground mr-auto rounded-bl-lg;
   }
   
   /* Loading animations */

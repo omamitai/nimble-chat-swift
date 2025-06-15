@@ -219,7 +219,7 @@ const Contacts: React.FC = () => {
                         name={contact.name}
                         size="lg"
                         isOnline={contact.isOnline}
-                        className="ring-2 ring-background shadow-sm"
+                        className="border-2 border-background"
                       />
                       
                       <div className="flex-1 min-w-0">

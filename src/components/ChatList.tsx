@@ -62,6 +62,18 @@ const ChatList: React.FC = () => {
     setActiveScreen('call');
   };
 
+  const handleListVoiceCall = (e: React.MouseEvent, contactId: string) => {
+    e.stopPropagation();
+    startCall(contactId, 'voice');
+    setActiveScreen('call');
+  };
+
+  const handleListVideoCall = (e: React.MouseEvent, contactId: string) => {
+    e.stopPropagation();
+    startCall(contactId, 'video');
+    setActiveScreen('call');
+  };
+
   const handlePullStart = (e: React.TouchEvent) => {
     const touch = e.touches[0];
     const startY = touch.clientY;
@@ -147,7 +159,7 @@ const ChatList: React.FC = () => {
                       name={contact.name}
                       size="lg"
                       isOnline={contact.isOnline}
-                      className="ring-2 ring-background"
+                      className="border-2 border-background"
                     />
                     <div className="absolute -bottom-1 -right-1 flex space-x-1">
                       <button
@@ -211,7 +223,7 @@ const ChatList: React.FC = () => {
             {filteredConversations.map((conversation) => (
               <div
                 key={conversation.id}
-                className="flex items-center space-x-4 px-6 py-4 hover:bg-muted/30 active:bg-muted/50 transition-smooth cursor-pointer"
+                className="flex items-center space-x-3 px-6 py-4 hover:bg-muted/30 active:bg-muted/50 transition-smooth cursor-pointer"
                 onClick={() => handleChatSelect(conversation.id)}
               >
                 <Avatar
@@ -219,6 +231,7 @@ const ChatList: React.FC = () => {
                   name={conversation.name}
                   size="lg"
                   isOnline={conversation.isOnline}
+                  className="border-2 border-background"
                 />
                 
                 <div className="flex-1 min-w-0">
@@ -263,6 +276,21 @@ const ChatList: React.FC = () => {
                       </div>
                     )}
                   </div>
+                </div>
+
+                <div className="flex items-center space-x-1">
+                  <button
+                    onClick={(e) => handleListVoiceCall(e, conversation.id)}
+                    className="tap-target p-2 hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-smooth"
+                  >
+                    <Phone className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={(e) => handleListVideoCall(e, conversation.id)}
+                    className="tap-target p-2 hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-smooth"
+                  >
+                    <Video className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
             ))}
