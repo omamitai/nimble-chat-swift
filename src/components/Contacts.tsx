@@ -1,5 +1,6 @@
+
 import React, { useMemo, useState } from 'react';
-import { ArrowLeft, Search, UserPlus, Phone, Video, Share2, MessageCircle, Users, Star, Copy, Check } from 'lucide-react';
+import { Search, UserPlus, Phone, Video, Share2, Users, Star, Copy, Check } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
@@ -9,10 +10,7 @@ import { toast } from 'sonner';
 const Contacts: React.FC = () => {
   const {
     contacts,
-    conversations,
     setActiveScreen,
-    setSelectedChat,
-    addMessage,
     startCall,
     toggleFavorite,
   } = useAppStore();
@@ -25,7 +23,7 @@ const Contacts: React.FC = () => {
     
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contact.phone.toLowerCase().includes(searchQuery.toLowerCase())
+      contact.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [contacts, searchQuery]);
 
@@ -68,26 +66,11 @@ const Contacts: React.FC = () => {
     }
   };
 
-  const handleMessage = (contactId: string) => {
-    const existingConversation = conversations.find(conv => 
-      conv.participants.includes(contactId) && !conv.isGroup
-    );
-
-    if (existingConversation) {
-      setSelectedChat(existingConversation.id);
-      setActiveScreen('conversation');
-    } else {
-      setSelectedChat(contactId);
-      setActiveScreen('conversation');
-    }
-  };
-
   const handleInviteFriends = async () => {
     const inviteText = 'Join me on SecureCall for free encrypted voice and video calls!';
     const inviteUrl = window.location.origin;
     
     try {
-      // Try Web Share API first (mobile devices)
       if (navigator.share && navigator.canShare && navigator.canShare({ text: inviteText, url: inviteUrl })) {
         await navigator.share({
           title: 'Join SecureCall',
@@ -96,21 +79,18 @@ const Contacts: React.FC = () => {
         });
         toast.success('Invite shared successfully!');
       } else {
-        // Fallback to clipboard
         await navigator.clipboard.writeText(`${inviteText} ${inviteUrl}`);
         setCopied(true);
         toast.success('Invite link copied to clipboard!');
         setTimeout(() => setCopied(false), 2000);
       }
     } catch (error) {
-      // Final fallback for older browsers
       try {
         await navigator.clipboard.writeText(`${inviteText} ${inviteUrl}`);
         setCopied(true);
         toast.success('Invite link copied to clipboard!');
         setTimeout(() => setCopied(false), 2000);
       } catch (clipboardError) {
-        // Manual copy fallback
         const textArea = document.createElement('textarea');
         textArea.value = `${inviteText} ${inviteUrl}`;
         document.body.appendChild(textArea);
@@ -227,7 +207,7 @@ const Contacts: React.FC = () => {
                         name={contact.name}
                         size="lg"
                         isOnline={contact.isOnline}
-                        className="border-2 border-background shadow-sm"
+                        className="flex-shrink-0"
                       />
                       
                       <div className="flex-1 min-w-0">
@@ -239,7 +219,7 @@ const Contacts: React.FC = () => {
                         
                         <div className="flex items-center justify-between">
                           <p className="text-sm text-muted-foreground/80">
-                            {contact.phone}
+                            {contact.username}
                           </p>
                           
                           {!contact.isOnline && contact.lastSeen && (
@@ -252,19 +232,13 @@ const Contacts: React.FC = () => {
 
                       {/* Call Actions */}
                       {!contact.isBlocked && (
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 flex-shrink-0">
                           <button
                             onClick={() => handleToggleFavorite(contact.id, contact.isFavorite, contact.name)}
                             className="tap-target w-10 h-10 hover:bg-muted/50 text-muted-foreground rounded-full transition-all flex items-center justify-center group/star"
                             title={contact.isFavorite ? "Remove from Quick Call" : "Add to Quick Call"}
                           >
                             <Star className={cn("w-5 h-5 transition-all", contact.isFavorite ? 'text-amber-400 fill-amber-400' : 'group-hover/star:text-amber-400 group-hover/star:scale-110')} />
-                          </button>
-                          <button
-                            onClick={() => handleMessage(contact.id)}
-                            className="tap-target w-10 h-10 bg-muted/30 hover:bg-muted/50 text-muted-foreground rounded-full transition-all flex items-center justify-center group/message"
-                          >
-                            <MessageCircle className="w-5 h-5 group-hover/message:scale-110 transition-transform" />
                           </button>
                           <button
                             onClick={() => handleVoiceCall(contact.id)}

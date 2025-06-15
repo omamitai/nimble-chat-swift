@@ -20,9 +20,9 @@ const Home: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<'favorites' | 'recents'>('favorites');
 
-  // Favorite contacts for Quick Call - limited to 8
+  // Favorite contacts for Quick Call - limited to 4
   const favoriteContacts = useMemo(() => {
-    return contacts.filter(c => c.isFavorite).slice(0, 8);
+    return contacts.filter(c => c.isFavorite).slice(0, 4);
   }, [contacts]);
 
   const filteredContacts = useMemo(() => {
@@ -30,7 +30,7 @@ const Home: React.FC = () => {
     
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contact.phone.toLowerCase().includes(searchQuery.toLowerCase())
+      contact.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [contacts, searchQuery, favoriteContacts]);
 
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
               )}
             >
               <PhoneCall className="w-4 h-4 mr-2" />
-              Favorites
+              Quick Call
             </button>
             <button
               onClick={() => setActiveTab('recents')}
@@ -190,13 +190,13 @@ const Home: React.FC = () => {
                       name={contact.name}
                       size="xl"
                       isOnline={contact.isOnline}
-                      className="mx-auto mb-4 shadow-lg"
+                      className="mx-auto mb-4"
                     />
                     <h3 className="font-bold text-foreground mb-1 truncate">
                       {contact.name}
                     </h3>
                     <p className="text-sm text-muted-foreground/80 mb-4 truncate">
-                      {contact.phone}
+                      {contact.username}
                     </p>
                     <div className="flex justify-center space-x-3">
                       <button
@@ -244,7 +244,7 @@ const Home: React.FC = () => {
                       name={call.contact?.name || 'Unknown'}
                       size="lg"
                       isOnline={call.contact?.isOnline}
-                      className="shadow-sm"
+                      className="flex-shrink-0"
                     />
                     
                     <div className="flex-1 min-w-0">
@@ -267,7 +267,7 @@ const Home: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 flex-shrink-0">
                       <button
                         onClick={() => handleVoiceCall(call.contactId)}
                         className="call-button-voice"

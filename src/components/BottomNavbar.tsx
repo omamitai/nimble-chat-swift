@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Phone, Users, Settings, Clock } from 'lucide-react';
+import { Phone, Users, Settings } from 'lucide-react';
 import { useAppStore, Screen } from '@/store/useAppStore';
 import { cn } from '@/lib/utils';
 

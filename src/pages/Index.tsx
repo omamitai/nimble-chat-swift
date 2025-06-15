@@ -39,7 +39,7 @@ const Index: React.FC = () => {
   const renderScreen = () => {
     switch (activeScreen) {
       case 'contacts':
-        return activeScreen === 'contacts' ? <Home /> : <Contacts />;
+        return <Contacts />;
       case 'settings':
         return <Settings />;
       case 'profile':
