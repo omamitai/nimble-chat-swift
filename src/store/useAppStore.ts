@@ -1,7 +1,7 @@
 
 import { create } from 'zustand';
 
-export type Screen = 'contacts' | 'settings' | 'profile' | 'call';
+export type Screen = 'home' | 'contacts' | 'settings' | 'profile' | 'call';
 
 export interface Contact {
   id: string;
@@ -168,7 +168,7 @@ const mockCallHistory: CallRecord[] = [
 
 export const useAppStore = create<AppState>((set, get) => ({
   // Initial state
-  activeScreen: 'contacts',
+  activeScreen: 'home',
   searchQuery: '',
   isSearching: false,
   showSearchBar: false,
@@ -210,7 +210,7 @@ export const useAppStore = create<AppState>((set, get) => ({
       if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.documentElement.classList.add('dark');
       } else {
-        document.documentElementclass List.remove('dark');
+        document.documentElement.classList.remove('dark');
       }
     }
   },

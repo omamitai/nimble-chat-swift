@@ -33,7 +33,7 @@ const NavItem: React.FC<NavItemProps> = ({ screen, label, Icon }) => {
 
 const BottomNavbar: React.FC = () => {
   const navItems: NavItemProps[] = [
-    { screen: 'contacts', label: 'Home', Icon: Phone },
+    { screen: 'home', label: 'Home', Icon: Phone },
     { screen: 'contacts', label: 'Contacts', Icon: Users },
     { screen: 'settings', label: 'Settings', Icon: Settings },
   ];
