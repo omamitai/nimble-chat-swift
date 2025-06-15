@@ -1,8 +1,6 @@
 
-// Centralized API service for backend integration
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
-// Types for API requests/responses
 export interface ApiResponse<T = any> {
   data: T;
   message?: string;
@@ -23,7 +21,18 @@ export interface User {
   about?: string;
 }
 
-// Generic API client
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
 class ApiClient {
   private baseURL: string;
   private accessToken: string | null = null;
@@ -51,30 +60,25 @@ class ApiClient {
       headers.set('Authorization', `Bearer ${this.accessToken}`);
     }
 
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers,
-      });
+    const response = await fetch(url, {
+      ...options,
+      headers,
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'API request failed');
-      }
-
-      return data;
-    } catch (error) {
-      console.error('API Error:', error);
-      throw error;
+    if (!response.ok) {
+      throw new Error(data.message || 'API request failed');
     }
+
+    return data;
   }
 
   // Auth methods
-  async login(username: string, password: string) {
+  async login(credentials: LoginRequest) {
     const response = await this.request<{ user: User; tokens: AuthTokens }>('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify(credentials),
     });
     
     if (response.success && response.data) {
@@ -84,11 +88,17 @@ class ApiClient {
     return response;
   }
 
-  async register(userData: { name: string; username: string; email: string; password: string }) {
-    return this.request<{ user: User; tokens: AuthTokens }>('/auth/register', {
+  async register(userData: RegisterRequest) {
+    const response = await this.request<{ user: User; tokens: AuthTokens }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData),
     });
+
+    if (response.success && response.data) {
+      this.setTokens(response.data.tokens);
+    }
+
+    return response;
   }
 
   async refreshTokens() {
@@ -144,24 +154,6 @@ class ApiClient {
       method: 'POST',
       body: JSON.stringify(contactData),
     });
-  }
-
-  // Call methods
-  async initiateCall(callData: any) {
-    return this.request('/calls/initiate', {
-      method: 'POST',
-      body: JSON.stringify(callData),
-    });
-  }
-
-  async endCall(callId: string) {
-    return this.request(`/calls/${callId}/end`, {
-      method: 'POST',
-    });
-  }
-
-  async getCallHistory() {
-    return this.request('/calls/history');
   }
 }
 

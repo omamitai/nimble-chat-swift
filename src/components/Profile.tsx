@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, Camera, Share2, Download, Upload, Edit3 } from 'lucide-react';
+import { ArrowLeft, Camera, Share2, Download, Edit3 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -187,14 +187,6 @@ const Profile: React.FC = () => {
             >
               <Download className="w-4 h-4 mr-2" />
               Backup Profile
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="w-full justify-start"
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              Import Contacts
             </Button>
           </CardContent>
         </Card>

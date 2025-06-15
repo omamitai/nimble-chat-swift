@@ -4,7 +4,11 @@ import { useAppStore } from '@/store/useAppStore';
 import Avatar from '@/components/Avatar';
 
 const ProfileSettingItem: React.FC = () => {
-    const { currentUser, setActiveScreen } = useAppStore();
+    const { user, setActiveScreen } = useAppStore();
+
+    if (!user) {
+        return null;
+    }
 
     return (
         <div className="p-4 border-b border-border/50">
@@ -13,19 +17,19 @@ const ProfileSettingItem: React.FC = () => {
                 onClick={() => setActiveScreen('profile')}
             >
                 <Avatar
-                    src={currentUser.avatar}
-                    name={currentUser.name}
+                    src={user.avatar}
+                    name={user.name}
                     size="xl"
                 />
                 <div className="flex-1 min-w-0">
                     <h2 className="text-lg font-semibold truncate">
-                        {currentUser.name}
+                        {user.name}
                     </h2>
                     <p className="text-sm text-muted-foreground truncate">
-                        {currentUser.about}
+                        {user.about || 'Hey there! I am using SecureCall.'}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                        {currentUser.username}
+                        {user.username}
                     </p>
                 </div>
                 <div className="text-muted-foreground">

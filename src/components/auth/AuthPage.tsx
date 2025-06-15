@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Eye, EyeOff, Phone, Shield } from 'lucide-react';
+import { Eye, EyeOff, Phone, Shield, Mail, User } from 'lucide-react';
 
 const AuthPage: React.FC = () => {
   const { setAuthenticated, setUser } = useAppStore();
@@ -21,9 +21,8 @@ const AuthPage: React.FC = () => {
   });
 
   const handleBypass = () => {
-    // Temporary bypass for development
     const mockUser = {
-      id: 'temp-user',
+      id: 'demo-user',
       name: 'Demo User',
       username: '@demo',
       email: 'demo@securecall.app',
@@ -32,8 +31,6 @@ const AuthPage: React.FC = () => {
     
     setUser(mockUser);
     setAuthenticated(true);
-    localStorage.setItem('user', JSON.stringify(mockUser));
-    localStorage.setItem('accessToken', 'demo-token');
     toast.success('Logged in with demo account');
   };
 
@@ -42,19 +39,20 @@ const AuthPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // This will be connected to your backend API later
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      // Simulate API call - will be replaced with actual backend integration
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       if (isLogin) {
+        // Login logic will be implemented with backend
         toast.success('Login successful!');
+        handleBypass(); // Temporary bypass
       } else {
+        // Create account logic will be implemented with backend
         toast.success('Account created successfully!');
+        handleBypass(); // Temporary bypass
       }
-      
-      // For now, use bypass functionality
-      handleBypass();
     } catch (error) {
-      toast.error(isLogin ? 'Login failed' : 'Registration failed');
+      toast.error(isLogin ? 'Login failed' : 'Account creation failed');
     } finally {
       setIsLoading(false);
     }
@@ -94,36 +92,46 @@ const AuthPage: React.FC = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      type="text"
-                      placeholder="Enter your full name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required={!isLogin}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required={!isLogin}
-                    />
-                  </div>
-                </>
+                <div className="space-y-2">
+                  <Label htmlFor="name">
+                    <User className="w-4 h-4 inline mr-2" />
+                    Full Name
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required={!isLogin}
+                  />
+                </div>
+              )}
+              
+              {!isLogin && (
+                <div className="space-y-2">
+                  <Label htmlFor="email">
+                    <Mail className="w-4 h-4 inline mr-2" />
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required={!isLogin}
+                  />
+                </div>
               )}
               
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">
+                  <User className="w-4 h-4 inline mr-2" />
+                  Username
+                </Label>
                 <Input
                   id="username"
                   name="username"
@@ -161,14 +169,14 @@ const AuthPage: React.FC = () => {
                 {isLoading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
               </Button>
 
-              {/* Development Bypass Button */}
+              {/* Development Bypass Button - Remove in production */}
               <Button 
                 type="button" 
                 variant="outline" 
                 className="w-full"
                 onClick={handleBypass}
               >
-                Skip Auth (Development Only)
+                Skip Auth (Demo Mode)
               </Button>
             </form>
 
@@ -179,7 +187,7 @@ const AuthPage: React.FC = () => {
                 className="text-blue-600 hover:text-blue-700 text-sm"
               >
                 {isLogin 
-                  ? "Don't have an account? Sign up" 
+                  ? "Don't have an account? Create one" 
                   : "Already have an account? Sign in"
                 }
               </button>

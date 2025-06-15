@@ -31,29 +31,17 @@ export function useApiCall<T>(
 }
 
 export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    setIsAuthenticated(!!token);
-    setLoading(false);
-  }, []);
-
   const login = async (username: string, password: string) => {
-    try {
-      const response = await apiClient.login(username, password);
-      setIsAuthenticated(true);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return apiClient.login({ username, password });
+  };
+
+  const register = async (userData: { name: string; username: string; email: string; password: string }) => {
+    return apiClient.register(userData);
   };
 
   const logout = () => {
     apiClient.logout();
-    setIsAuthenticated(false);
   };
 
-  return { isAuthenticated, loading, login, logout };
+  return { login, register, logout };
 }
