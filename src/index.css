@@ -24,7 +24,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221 83% 53%;
-    --radius: 1rem;
+    --radius: 1.25rem;
     
     /* App specific colors */
     --message-sent: 142 76% 36%;
@@ -52,6 +52,7 @@
     --border: 240 15% 15%;
     --input: 240 15% 15%;
     --ring: 217 91% 60%;
+    --radius: 1.25rem;
     
     /* App specific colors for dark mode */
     --message-sent: 217 91% 60%;
@@ -122,16 +123,16 @@
   
   /* Enhanced button styles */
   .btn-primary {
-    @apply bg-gradient-to-r from-primary to-primary/90 text-primary-foreground px-6 py-3 rounded-xl font-semibold shadow-md tap-target transition-smooth hover:shadow-lg hover:scale-105 border border-primary/20;
+    @apply bg-gradient-to-r from-primary to-primary/90 text-primary-foreground px-6 py-3 rounded-lg font-semibold shadow-md tap-target transition-smooth hover:shadow-lg hover:scale-105 border border-primary/20;
   }
   
   .btn-secondary {
-    @apply bg-gradient-to-r from-muted to-muted/80 text-foreground px-6 py-3 rounded-xl font-medium tap-target transition-smooth hover:shadow-md hover:scale-105 border border-border;
+    @apply bg-gradient-to-r from-muted to-muted/80 text-foreground px-6 py-3 rounded-lg font-medium tap-target transition-smooth hover:shadow-md hover:scale-105 border border-border;
   }
   
   /* Enhanced call button styles */
   .call-button {
-    @apply w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-110 shadow-sm hover:shadow-md border tap-target;
+    @apply w-10 h-10 rounded-lg flex items-center justify-center transition-all hover:scale-110 shadow-sm hover:shadow-md border tap-target;
   }
   
   .call-button-voice {
@@ -144,7 +145,7 @@
   
   /* Enhanced message bubble styles */
   .message-bubble {
-    @apply p-4 px-5 rounded-2xl shadow-sm border;
+    @apply p-4 px-5 rounded-3xl shadow-sm border;
   }
   
   .message-sent {

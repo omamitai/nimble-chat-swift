@@ -1,4 +1,3 @@
-
 import React, { useMemo, useState } from 'react';
 import { ArrowLeft, Search, UserPlus, Phone, Video, Share2, MessageCircle, Users } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
@@ -114,15 +113,9 @@ const Contacts: React.FC = () => {
     <div className="flex flex-col h-full bg-background">
       {/* Header */}
       <div className="safe-area-top bg-background/95 backdrop-blur-sm border-b border-border/50">
-        <div className="flex items-center space-x-4 px-6 py-4">
-          <button
-            onClick={() => setActiveScreen('chatList')}
-            className="tap-target p-2 -ml-2 hover:bg-muted rounded-full transition-smooth"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div className="flex-1">
-            <h1 className="text-xl font-semibold">Contacts</h1>
+        <div className="flex items-center justify-between px-6 py-4">
+          <div>
+            <h1 className="text-2xl font-bold">Contacts</h1>
             <p className="text-sm text-muted-foreground">
               {filteredContacts.length} contact{filteredContacts.length !== 1 ? 's' : ''}
             </p>
@@ -130,7 +123,7 @@ const Contacts: React.FC = () => {
           <Button
             onClick={handleInviteFriends}
             size="sm"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
+            className="btn-primary"
           >
             <Share2 className="w-4 h-4 mr-2" />
             Invite
@@ -146,33 +139,8 @@ const Contacts: React.FC = () => {
               placeholder="Search contacts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-muted/50 rounded-2xl text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 border-0"
+              className="w-full pl-12 pr-4 py-3 bg-muted/50 rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 border-0"
             />
-          </div>
-        </div>
-
-        {/* Invite Friends Card */}
-        <div className="mx-6 mb-4 p-4 bg-gradient-to-r from-primary/10 to-blue-500/10 rounded-2xl border border-primary/20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
-                <Users className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground">Invite Friends</h3>
-                <p className="text-xs text-muted-foreground">
-                  Share SecureCall for encrypted calls
-                </p>
-              </div>
-            </div>
-            <Button
-              onClick={handleInviteFriends}
-              size="sm"
-              variant="outline"
-              className="border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground"
-            >
-              <Share2 className="w-4 h-4" />
-            </Button>
           </div>
         </div>
       </div>
@@ -188,7 +156,7 @@ const Contacts: React.FC = () => {
             <p className="text-muted-foreground text-sm mb-6 max-w-xs">
               {searchQuery ? 'Try a different search term' : 'Invite friends to start calling'}
             </p>
-            <Button onClick={handleInviteFriends} className="bg-primary hover:bg-primary/90">
+            <Button onClick={handleInviteFriends} className="btn-primary">
               <UserPlus className="w-4 h-4 mr-2" />
               Invite Friends
             </Button>

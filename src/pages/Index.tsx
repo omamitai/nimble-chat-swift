@@ -7,6 +7,8 @@ import Contacts from '@/components/Contacts';
 import Settings from '@/components/Settings';
 import Profile from '@/components/Profile';
 import Call from '@/components/Call';
+import BottomNavbar from '@/components/BottomNavbar';
+import { cn } from '@/lib/utils';
 
 const Index: React.FC = () => {
   const { activeScreen, theme, setTheme } = useAppStore();
@@ -54,10 +56,15 @@ const Index: React.FC = () => {
     }
   };
 
+  const showNavbar = !['conversation', 'call', 'profile'].includes(activeScreen);
+
   return (
     <div className="h-screen w-full bg-background text-foreground overflow-hidden">
       <div className="h-full max-w-md mx-auto relative">
-        {renderScreen()}
+        <div className={cn("absolute inset-0", showNavbar && "bottom-20")}>
+           {renderScreen()}
+        </div>
+        {showNavbar && <BottomNavbar />}
       </div>
     </div>
   );
