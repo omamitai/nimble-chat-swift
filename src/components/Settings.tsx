@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowLeft, Camera, Bell, Settings as SettingsIcon, Mic } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
@@ -107,7 +106,7 @@ const Settings: React.FC = () => {
       <div className="safe-area-top">
         <div className="flex items-center space-x-3 p-4 border-b border-border/50">
           <button
-            onClick={() => setActiveScreen('chatList')}
+            onClick={() => setActiveScreen('home')}
             className="tap-target p-2 -ml-2 hover:bg-muted rounded-full transition-smooth"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -137,7 +136,7 @@ const Settings: React.FC = () => {
                 {currentUser.about}
               </p>
               <p className="text-sm text-muted-foreground">
-                {currentUser.phone}
+                {currentUser.username}
               </p>
             </div>
             <div className="text-muted-foreground">

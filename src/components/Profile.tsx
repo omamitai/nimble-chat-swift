@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ArrowLeft, Camera } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
@@ -124,16 +123,16 @@ const Profile: React.FC = () => {
             )}
           </div>
 
-          {/* Phone (Read-only) */}
+          {/* Username (Read-only) */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-muted-foreground">
-              Phone Number
+              Username
             </label>
             <div className="p-3 bg-muted rounded-lg">
-              <p className="text-sm">{currentUser.phone}</p>
+              <p className="text-sm">{currentUser.username}</p>
             </div>
             <p className="text-xs text-muted-foreground">
-              Phone number cannot be changed
+              Username cannot be changed
             </p>
           </div>
 
