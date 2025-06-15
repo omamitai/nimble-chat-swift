@@ -1,7 +1,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/sonner';
 
 import ContactsHeader from './contacts/ContactsHeader';
 import ContactSearchBar from './contacts/ContactSearchBar';
@@ -61,9 +61,9 @@ const Contacts: React.FC = () => {
   const handleToggleFavorite = (contactId: string, isFavorite: boolean | undefined, contactName: string) => {
     toggleFavorite(contactId);
     if (!isFavorite) {
-      toast.success(`${contactName} added to Quick Call`);
+      toast.success(`${contactName} added to favorites`);
     } else {
-      toast.info(`${contactName} removed from Quick Call`);
+      toast.info(`${contactName} removed from favorites`);
     }
   };
 

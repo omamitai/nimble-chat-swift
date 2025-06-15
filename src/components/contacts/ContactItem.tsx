@@ -58,7 +58,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact, onVoiceCall, onVideo
                 <button
                     onClick={() => onToggleFavorite(contact.id, contact.isFavorite, contact.name)}
                     className="tap-target w-10 h-10 hover:bg-muted/50 text-muted-foreground rounded-full transition-all flex items-center justify-center group/star"
-                    title={contact.isFavorite ? "Remove from Quick Call" : "Add to Quick Call"}
+                    title={contact.isFavorite ? "Remove from Favorites" : "Add to Favorites"}
                 >
                     <Star className={cn("w-5 h-5 transition-all", contact.isFavorite ? 'text-amber-400 fill-amber-400' : 'group-hover/star:text-amber-400 group-hover/star:scale-110')} />
                 </button>

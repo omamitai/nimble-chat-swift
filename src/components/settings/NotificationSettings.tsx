@@ -3,7 +3,7 @@ import React from 'react';
 import { Bell, Volume2, Vibrate } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import { Switch } from '@/components/ui/switch';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/sonner';
 import SettingsPage from './SettingsPage';
 
 const NotificationSettings: React.FC = () => {
@@ -11,7 +11,7 @@ const NotificationSettings: React.FC = () => {
 
     const handleToggle = (key: keyof typeof notifications, value: boolean) => {
         updateNotificationSettings({ [key]: value });
-        toast.success(`Notifications ${key} ${value ? 'enabled' : 'disabled'}`);
+        toast.success(`${key.charAt(0).toUpperCase() + key.slice(1)} ${value ? 'enabled' : 'disabled'}`);
     }
 
     return (

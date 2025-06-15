@@ -22,7 +22,7 @@ const QuickCallTab: React.FC<QuickCallTabProps> = ({ filteredContacts, onVoiceCa
                 </div>
                 <h3 className="text-lg font-bold mb-2">No favorite contacts</h3>
                 <p className="text-muted-foreground/80 text-sm mb-6 max-w-xs leading-relaxed">
-                    {searchQuery ? 'Try a different search term' : 'Add contacts to favorites for quick calling'}
+                    {searchQuery ? 'Try a different search term' : 'Star contacts to add them to favorites for quick calling'}
                 </p>
                 <Button
                     onClick={() => setActiveScreen('contacts')}
