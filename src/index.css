@@ -5,61 +5,68 @@
 
 @layer base {
   :root {
-    --background: 220 50% 98%;
-    --foreground: 220 15% 20%;
-    --card: 220 40% 100%;
-    --card-foreground: 220 15% 20%;
-    --popover: 220 40% 100%;
-    --popover-foreground: 220 15% 20%;
-    --primary: 220 95% 65%;
+    --background: 216 50% 98%;
+    --foreground: 216 20% 15%;
+    --card: 216 40% 100%;
+    --card-foreground: 216 20% 15%;
+    --popover: 216 40% 100%;
+    --popover-foreground: 216 20% 15%;
+    --primary: 210 100% 56%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 220 40% 94%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 220 40% 94%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 220 40% 94%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
+    --secondary: 216 30% 92%;
+    --secondary-foreground: 216 20% 20%;
+    --muted: 216 30% 92%;
+    --muted-foreground: 216 16% 45%;
+    --accent: 216 30% 92%;
+    --accent-foreground: 216 20% 20%;
+    --destructive: 0 72% 55%;
     --destructive-foreground: 210 40% 98%;
-    --border: 220 20% 88%;
-    --input: 220 20% 91%;
-    --ring: 220 80% 55%;
-    --radius: 1.5rem;
+    --border: 216 25% 85%;
+    --input: 216 25% 88%;
+    --ring: 210 100% 56%;
+    --radius: 1.75rem;
     
-    /* App specific colors */
-    --message-sent: 220 85% 60%;
-    --message-received: 220 40% 94%;
-    --online: 142 76% 36%;
-    --call-background: 220 30% 12%;
+    /* Nordic-inspired app colors */
+    --message-sent: 210 100% 56%;
+    --message-received: 216 30% 92%;
+    --online: 142 76% 42%;
+    --call-background: 210 45% 8%;
+    --nordic-ice: 195 100% 96%;
+    --nordic-frost: 210 25% 88%;
+    --nordic-ocean: 210 100% 45%;
+    --nordic-aurora: 175 85% 55%;
   }
 
   .dark {
-    --background: 220 25% 12%;
-    --foreground: 220 25% 95%;
-    --card: 220 25% 15%;
-    --card-foreground: 220 25% 95%;
-    --popover: 220 25% 15%;
-    --popover-foreground: 220 25% 95%;
-    --primary: 220 92% 70%;
-    --primary-foreground: 217 19% 11%;
-    --secondary: 220 25% 18%;
+    --background: 216 30% 6%;
+    --foreground: 216 25% 95%;
+    --card: 216 25% 8%;
+    --card-foreground: 216 25% 95%;
+    --popover: 216 25% 8%;
+    --popover-foreground: 216 25% 95%;
+    --primary: 210 100% 65%;
+    --primary-foreground: 216 20% 8%;
+    --secondary: 216 25% 12%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 220 25% 18%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 220 25% 18%;
+    --muted: 216 25% 12%;
+    --muted-foreground: 216 20% 65%;
+    --accent: 216 25% 12%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 56.9%;
+    --destructive: 0 65% 58%;
     --destructive-foreground: 210 40% 98%;
-    --border: 220 20% 25%;
-    --input: 220 20% 25%;
-    --ring: 220 80% 65%;
-    --radius: 1.5rem;
+    --border: 216 20% 18%;
+    --input: 216 20% 18%;
+    --ring: 210 100% 65%;
     
-    /* App specific colors for dark mode */
-    --message-sent: 220 S80% 70%;
-    --message-received: 220 25% 18%;
-    --online: 142 76% 36%;
-    --call-background: 220 30% 12%;
+    /* Nordic dark mode */
+    --message-sent: 210 100% 65%;
+    --message-received: 216 25% 12%;
+    --online: 142 76% 42%;
+    --call-background: 216 30% 4%;
+    --nordic-ice: 216 25% 12%;
+    --nordic-frost: 216 20% 18%;
+    --nordic-ocean: 210 100% 55%;
+    --nordic-aurora: 175 75% 45%;
   }
 }
 
@@ -68,12 +75,14 @@
     @apply border-border;
   }
   body {
-    @apply bg-muted/50 text-foreground; /* Changed background for centered feel */
+    @apply bg-gradient-to-br from-background via-nordic-ice/20 to-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     overscroll-behavior: none;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
   
   html, body {
@@ -81,14 +90,14 @@
     overflow: hidden;
   }
   
-  /* Enhanced scrollbar styling */
+  /* Enhanced Nordic scrollbar */
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--primary) / 0.3) transparent;
+    scrollbar-color: hsl(var(--primary) / 0.2) transparent;
   }
   
   .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
+    width: 3px;
   }
   
   .custom-scrollbar::-webkit-scrollbar-track {
@@ -101,18 +110,18 @@
   }
   
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary) / 0.5);
+    background: hsl(var(--primary) / 0.4);
   }
 }
 
 @layer components {
   .tap-target {
-    @apply active:scale-95 active:opacity-80;
+    @apply active:scale-95 active:opacity-75;
     transition: transform 0.15s cubic-bezier(0.2, 0, 0.13, 2), opacity 0.15s ease-out;
   }
   
   .transition-smooth {
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .safe-area-top {
@@ -123,86 +132,78 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
   
-  /* Enhanced button styles */
+  /* Nordic-inspired button styles */
   .btn-primary {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-full font-semibold tap-target transition-smooth hover:bg-primary/90 border-0;
+    @apply bg-gradient-to-r from-primary to-nordic-ocean text-primary-foreground px-6 py-3.5 rounded-full font-semibold tap-target transition-smooth hover:shadow-lg hover:scale-105 border-0;
   }
   
   .btn-secondary {
-    @apply bg-muted text-foreground px-6 py-3 rounded-full font-medium tap-target transition-smooth hover:bg-muted/80 border border-border;
+    @apply bg-muted/60 backdrop-blur-sm text-foreground px-6 py-3.5 rounded-full font-medium tap-target transition-smooth hover:bg-muted/80 border border-border/40;
   }
   
-  /* Enhanced call button styles */
+  /* Enhanced Nordic call buttons */
   .call-button {
-    @apply w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 border tap-target;
+    @apply w-11 h-11 rounded-full flex items-center justify-center transition-all hover:scale-110 border tap-target shadow-sm;
   }
   
   .call-button-voice {
-    @apply call-button bg-primary/10 hover:bg-primary/20 text-primary border-primary/20;
+    @apply call-button bg-gradient-to-br from-primary/15 to-primary/10 hover:from-primary/25 hover:to-primary/15 text-primary border-primary/25 hover:border-primary/40;
   }
   
   .call-button-video {
-    @apply call-button bg-primary/10 hover:bg-primary/20 text-primary border-primary/20;
+    @apply call-button bg-gradient-to-br from-nordic-aurora/15 to-nordic-aurora/10 hover:from-nordic-aurora/25 hover:to-nordic-aurora/15 text-nordic-aurora border-nordic-aurora/25 hover:border-nordic-aurora/40;
   }
   
-  /* Enhanced message bubble styles */
+  /* Enhanced Nordic message bubbles */
   .message-bubble {
-    @apply p-4 px-5 rounded-3xl border;
+    @apply p-4 px-5 rounded-3xl border shadow-sm;
   }
   
   .message-sent {
-    @apply bg-primary text-primary-foreground ml-auto rounded-br-lg border-0;
+    @apply bg-gradient-to-br from-primary to-nordic-ocean text-primary-foreground ml-auto rounded-br-lg border-0 shadow-md;
   }
   
   .message-received {
-    @apply bg-muted text-foreground mr-auto rounded-bl-lg border-border;
+    @apply bg-gradient-to-br from-muted/80 to-muted/60 backdrop-blur-sm text-foreground mr-auto rounded-bl-lg border-border/30;
   }
   
-  /* Enhanced loading animations */
-  .pulse-ring {
-    @apply absolute inset-0 rounded-full border-2 border-white/50;
-    animation: pulse-ring 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-  
-  @keyframes pulse-ring {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1.3);
-      opacity: 0;
-    }
-  }
-  
-  /* Gradient text utility */
+  /* Nordic gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary via-nordic-ocean to-nordic-aurora bg-clip-text text-transparent font-bold;
   }
   
-  /* Enhanced glass morphism effect */
+  /* Enhanced Nordic glass effect */
   .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-lg;
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg;
   }
   
   .glass-dark {
-    @apply bg-black/10 backdrop-blur-md border border-black/20 shadow-lg;
+    @apply bg-black/10 backdrop-blur-xl border border-black/20 shadow-lg;
   }
   
-  /* Enhanced avatar styles */
+  /* Nordic card styles */
+  .nordic-card {
+    @apply bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border border-border/40 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300;
+  }
+  
+  .nordic-card-interactive {
+    @apply nordic-card hover:scale-[1.02] hover:border-primary/30 cursor-pointer;
+  }
+  
+  /* Enhanced avatar with Nordic styling */
   .avatar-ring {
-    @apply ring-2 ring-background;
+    @apply ring-2 ring-background shadow-sm;
   }
   
   .avatar-online {
-    @apply ring-2 ring-online/50;
+    @apply ring-2 ring-online/40 shadow-sm;
   }
 }
 
-/* Enhanced animations */
+/* Enhanced Nordic animations */
 @keyframes slide-up {
   from {
-    transform: translateY(24px);
+    transform: translateY(20px);
     opacity: 0;
   }
   to {
@@ -216,7 +217,7 @@
     transform: translateY(0px);
   }
   28% {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
   44% {
     transform: translateY(0px);
@@ -228,7 +229,7 @@
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
 }
 
@@ -238,6 +239,15 @@
   }
   100% {
     background-position: 200% 0;
+  }
+}
+
+@keyframes aurora {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 
@@ -259,35 +269,28 @@
   animation: shimmer 2s infinite;
 }
 
-/* Enhanced focus styles for better accessibility */
+.animate-aurora {
+  background: linear-gradient(-45deg, hsl(var(--primary)), hsl(var(--nordic-ocean)), hsl(var(--nordic-aurora)), hsl(var(--primary)));
+  background-size: 400% 400%;
+  animation: aurora 8s ease-in-out infinite;
+}
+
+/* Enhanced focus styles for accessibility */
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  @apply outline-none ring-2 ring-primary/60 ring-offset-2 ring-offset-background;
+  @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-background;
 }
 
-/* Prevent text selection on UI elements */
-.no-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+/* Nordic design utilities */
+.nordic-shadow {
+  box-shadow: 0 4px 20px -4px hsl(var(--primary) / 0.1), 0 2px 8px -2px hsl(var(--foreground) / 0.05);
 }
 
-/* Enhanced interactive elements */
-.interactive-scale {
-  @apply transition-transform duration-200 hover:scale-105 active:scale-95;
+.nordic-shadow-lg {
+  box-shadow: 0 8px 32px -8px hsl(var(--primary) / 0.15), 0 4px 16px -4px hsl(var(--foreground) / 0.1);
 }
 
-.hover-lift {
-  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
-}
-
-/* Enhanced card styles */
-.card-enhanced {
-  @apply bg-card border border-border rounded-3xl shadow-sm hover:shadow-md transition-all duration-200;
-}
-
-.card-interactive {
-  @apply card-enhanced hover:scale-[1.02] hover:border-primary/20 cursor-pointer;
+.nordic-blur {
+  backdrop-filter: blur(20px) saturate(150%);
 }

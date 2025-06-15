@@ -52,17 +52,24 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Messaging app specific colors
+				// Nordic-inspired messaging colors
 				'message-sent': 'hsl(var(--message-sent))',
 				'message-received': 'hsl(var(--message-received))',
-				'online': 'hsl(142 76% 36%)',
+				'online': 'hsl(142 76% 42%)',
 				'offline': 'hsl(var(--muted-foreground))',
 				'call-background': 'hsl(var(--call-background))',
+				'nordic-ice': 'hsl(var(--nordic-ice))',
+				'nordic-frost': 'hsl(var(--nordic-frost))',
+				'nordic-ocean': 'hsl(var(--nordic-ocean))',
+				'nordic-aurora': 'hsl(var(--nordic-aurora))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
 			},
 			keyframes: {
 				'accordion-down': {
@@ -113,6 +120,22 @@ export default {
 				'pulse-slow': {
           '50%': { opacity: '.5' },
         },
+				'aurora': {
+					'0%, 100%': {
+						backgroundPosition: '0% 50%'
+					},
+					'50%': {
+						backgroundPosition: '100% 50%'
+					}
+				},
+				'pulse-glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 5px hsl(var(--primary) / 0.5)'
+					},
+					'50%': {
+						boxShadow: '0 0 20px hsl(var(--primary) / 0.8), 0 0 30px hsl(var(--primary) / 0.4)'
+					}
+				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -121,6 +144,8 @@ export default {
 				'slide-up': 'slide-up 0.3s ease-out',
 				'typing': 'typing 1.4s ease-in-out infinite',
 				'pulse-slow': 'pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+				'aurora': 'aurora 8s ease-in-out infinite',
+				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
 			}
 		}
 	},

@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { Search, Phone, Video, Settings, Users, PhoneCall, UserPlus } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
@@ -20,7 +21,7 @@ const ChatList: React.FC = () => {
 
   const [pullOffset, setPullOffset] = useState(0);
   
-  // Favorite contacts for Quick Call are now based on the isFavorite flag
+  // Favorite contacts for Quick Call - limited to 4
   const favoriteContacts = useMemo(() => {
     return contacts.filter(c => c.isFavorite).slice(0, 4);
   }, [contacts]);
@@ -100,38 +101,38 @@ const ChatList: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-background">
+    <div className="flex flex-col h-full bg-gradient-to-b from-background to-background/95">
       {/* Header */}
       <div className="safe-area-top">
-        <div className="relative flex items-center justify-center px-6 py-4 bg-background border-b border-border/50">
-          <h1 className="text-2xl font-bold">Chats</h1>
+        <div className="relative flex items-center justify-center px-6 py-5 bg-background/90 backdrop-blur-xl border-b border-border/30">
+          <h1 className="text-2xl font-bold gradient-text">Chats</h1>
           <div className="absolute right-6 flex items-center space-x-1">
             <button 
               className="tap-target p-3 hover:bg-primary/10 rounded-full transition-smooth group"
               onClick={() => setShowSearchBar(!showSearchBar)}
             >
-              <Search className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <Search className="w-5 h-5 text-muted-foreground/80 group-hover:text-primary transition-colors" />
             </button>
             <button 
               className="tap-target p-3 hover:bg-primary/10 rounded-full transition-smooth group"
               onClick={() => setActiveScreen('settings')}
             >
-              <Settings className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <Settings className="w-5 h-5 text-muted-foreground/80 group-hover:text-primary transition-colors" />
             </button>
           </div>
         </div>
 
         {/* Search Bar */}
         {showSearchBar && (
-          <div className="px-6 py-4 border-b border-border/50 animate-slide-up bg-background">
+          <div className="px-6 py-4 border-b border-border/30 animate-slide-up bg-background/90 backdrop-blur-xl">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground/60" />
               <input
                 type="text"
                 placeholder="Search conversations..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-muted/50 backdrop-blur-sm rounded-2xl text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 border border-border/50"
+                className="w-full pl-12 pr-4 py-4 bg-muted/30 backdrop-blur-sm rounded-2xl text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/40 border border-border/30 transition-all"
                 autoFocus
               />
             </div>
@@ -139,15 +140,15 @@ const ChatList: React.FC = () => {
         )}
 
         {/* Quick Call Section */}
-        <div className="px-6 py-5 border-b border-border/30">
-          <div className="text-center mb-4">
-            <h3 className="text-sm font-semibold text-foreground flex items-center justify-center">
-              <PhoneCall className="w-4 h-4 mr-2 text-primary" />
+        <div className="px-6 py-6 border-b border-border/20 bg-gradient-to-r from-background/80 to-nordic-ice/10">
+          <div className="text-center mb-5">
+            <h3 className="text-base font-bold text-foreground flex items-center justify-center">
+              <PhoneCall className="w-5 h-5 mr-2 text-primary" />
               Quick Call
             </h3>
-            <p className="text-xs text-muted-foreground mt-0.5">Your favorite contacts</p>
+            <p className="text-xs text-muted-foreground/70 mt-1">Your favorite contacts</p>
           </div>
-          <div className="flex justify-center space-x-4 overflow-x-auto pb-2 -mx-6 px-6 custom-scrollbar">
+          <div className="flex justify-center space-x-6 overflow-x-auto pb-2 -mx-6 px-6 custom-scrollbar">
             {favoriteContacts.map(contact => (
               <div key={contact.id} className="flex-shrink-0 text-center group w-20">
                 <div className="relative">
@@ -156,11 +157,11 @@ const ChatList: React.FC = () => {
                     name={contact.name}
                     size="lg"
                     isOnline={contact.isOnline}
-                    className="transition-transform group-hover:scale-105 cursor-pointer mx-auto"
+                    className="transition-all group-hover:scale-110 cursor-pointer mx-auto shadow-md group-hover:shadow-lg"
                     onClick={() => handleVoiceCall(contact.id)}
                   />
                 </div>
-                <span className="text-xs text-foreground font-medium mt-2 block w-full truncate">
+                <span className="text-xs text-foreground font-semibold mt-3 block w-full truncate">
                   {contact.name.split(' ')[0]}
                 </span>
               </div>
@@ -168,11 +169,11 @@ const ChatList: React.FC = () => {
              <div className="flex-shrink-0 text-center group w-20">
               <button 
                 onClick={() => setActiveScreen('contacts')}
-                className="w-12 h-12 rounded-full bg-muted/60 hover:bg-muted transition-smooth flex items-center justify-center cursor-pointer group-hover:scale-105 mx-auto"
+                className="w-12 h-12 rounded-full bg-gradient-to-br from-muted/50 to-muted/30 hover:from-muted/70 hover:to-muted/50 transition-all flex items-center justify-center cursor-pointer group-hover:scale-110 mx-auto shadow-md group-hover:shadow-lg"
               >
-                <UserPlus className="w-5 h-5 text-muted-foreground" />
+                <UserPlus className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
               </button>
-              <span className="text-xs text-muted-foreground font-medium mt-2 block w-full truncate">
+              <span className="text-xs text-muted-foreground/80 font-medium mt-3 block w-full truncate">
                 Add
               </span>
             </div>
@@ -197,20 +198,20 @@ const ChatList: React.FC = () => {
 
         {filteredConversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+            <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-6">
               <Phone className="w-10 h-10 text-primary" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Ready to connect?</h3>
-            <p className="text-muted-foreground text-sm mb-6 max-w-xs">
+            <p className="text-muted-foreground/80 text-sm mb-6 max-w-xs leading-relaxed">
               {searchQuery ? 'No matches found' : 'Start a secure call or message with your contacts'}
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-border/20">
+          <div className="divide-y divide-border/15 pb-6">
             {filteredConversations.map((conversation) => (
               <div
                 key={conversation.id}
-                className="flex items-center space-x-4 px-6 py-5 hover:bg-muted/20 active:bg-muted/30 transition-all cursor-pointer group"
+                className="flex items-center space-x-4 px-6 py-5 hover:bg-gradient-to-r hover:from-muted/20 hover:to-transparent active:bg-muted/30 transition-all cursor-pointer group"
                 onClick={() => handleChatSelect(conversation.id)}
               >
                 <Avatar
@@ -218,7 +219,7 @@ const ChatList: React.FC = () => {
                   name={conversation.name}
                   size="lg"
                   isOnline={conversation.isOnline}
-                  className="transition-transform group-hover:scale-105"
+                  className="transition-all group-hover:scale-105 shadow-sm"
                 />
                 
                 <div className="flex-1 min-w-0">
@@ -230,7 +231,7 @@ const ChatList: React.FC = () => {
                       )}
                     </h3>
                     {conversation.lastMessage && (
-                      <span className="text-xs text-muted-foreground flex-shrink-0 ml-2">
+                      <span className="text-xs text-muted-foreground/70 flex-shrink-0 ml-2">
                         {formatTime(conversation.lastMessage.timestamp)}
                       </span>
                     )}
@@ -248,7 +249,7 @@ const ChatList: React.FC = () => {
                           <span className="text-xs font-medium">typing...</span>
                         </div>
                       ) : (
-                        <p className="text-sm text-muted-foreground truncate">
+                        <p className="text-sm text-muted-foreground/80 truncate">
                           {conversation.lastMessage?.senderId === 'me' && (
                             <span className="text-primary font-medium">You: </span>
                           )}
@@ -258,7 +259,7 @@ const ChatList: React.FC = () => {
                     </div>
                     
                     {conversation.unreadCount > 0 && (
-                      <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-full min-w-[24px] flex items-center justify-center shadow-sm">
+                      <div className="bg-gradient-to-r from-primary to-nordic-ocean text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-full min-w-[24px] flex items-center justify-center shadow-sm">
                         {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
                       </div>
                     )}
